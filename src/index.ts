@@ -4,6 +4,7 @@ import authRoutes from "./route/authRoutes";
 import productRoutes from "./route/productRoutes";
 import categoriesRoutes from "./route/categoriesRoutes";
 import stockRoutes from "./route/stockRoutes";
+import orderRoutes from "./route/orderRoutes";
 import cors from "cors";
 
 const corsOptions = {
@@ -21,6 +22,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoriesRoutes);
 app.use("/api/stocks", stockRoutes);
+app.use("/api/orders", orderRoutes);
 
 // app.get("/api/test", (req, res) => {
 //   res.json({ message: "Server is running! 🚀" });

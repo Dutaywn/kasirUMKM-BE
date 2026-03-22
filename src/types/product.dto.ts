@@ -4,6 +4,7 @@ export interface CreateProductDTO {
   price: number;
   categoryId: number;
   stocks: number;
+  stockType: string;
   note?: string;
 }
 
@@ -13,5 +14,6 @@ export interface UpdateProductDTO {
   price?: number;
   categoryId?: number;
   stocks?: number;
+  stockType?: string;
   note?: string;
 }

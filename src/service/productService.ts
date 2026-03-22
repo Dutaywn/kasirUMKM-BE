@@ -11,7 +11,7 @@ export const getAllProducts = async () => {
                         name: true,
                     }
                 },
-                stocks: {
+                stockId: {
                     select: {
                         id: true,
                         total: true,
@@ -43,13 +43,15 @@ export const getProductById = async (id: number) => {
 
 export const createProduct = async (data: any) => {
     try {
-        const { stocks, stock, note, ...rest } = data;
+        const { stocks, stockType, note, ...rest } = data;
         const initialStock = Number(stocks || 0);
 
         const product = await prisma.product.create({
             data: {
                 ...rest,
-                stocks: {
+                stocks: initialStock,
+                stockType: stockType,
+                stockId: {
                     create: {
                         total: initialStock,
                         type: "IN",
@@ -58,7 +60,7 @@ export const createProduct = async (data: any) => {
                 }
             },
             include: {
-                stocks: true
+                stockId: true
             }
         });
 
@@ -70,16 +72,19 @@ export const createProduct = async (data: any) => {
 
 export const updateProduct = async (id: number, data: any) => {
     try {
-        const { stocks, stock, note, ...rest } = data;
+        const { stocks, stockType, note, ...rest } = data;
         
-        // If stocks or stock is provided, create a new ADJUSTMENT entry
         const updateData: any = { ...rest };
-        const newStockValue = stocks !== undefined ? stocks : stock;
+        
+        if (stockType !== undefined) {
+            updateData.stockType = stockType;
+        }
 
-        if (newStockValue !== undefined) {
-            updateData.stocks = {
+        if (stocks !== undefined) {
+            updateData.stocks = Number(stocks);
+            updateData.stockId = {
                 create: {
-                    total: Number(newStockValue),
+                    total: Number(stocks),
                     type: "ADJUSTMENT",
                     note: note || "Stock updated via product edit"
                 }
@@ -92,7 +97,7 @@ export const updateProduct = async (id: number, data: any) => {
             },
             data: updateData,
             include: {
-                stocks: true
+                stockId: true
             }
         });
 
