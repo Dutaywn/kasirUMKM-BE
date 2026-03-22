@@ -32,7 +32,7 @@ async function main() {
   // 2. Create Products for each category
   for (const category of categories) {
     // 3-7 products per category
-    const productCount = faker.number.int({ min: 3, max: 7 });
+    const productCount = faker.number.int({ min: 20, max: 50 });
 
     for (let i = 0; i < productCount; i++) {
       const initialStock = faker.number.int({ min: 5, max: 100 });
