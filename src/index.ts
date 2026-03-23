@@ -18,29 +18,21 @@ const PORT = process.env.PORT || 3001;
 // CORS setup: Allow frontend or dynamic origin in production
 const allowedOrigins = [
   "http://localhost:3000",
-  process.env.FRONTEND_URL,
-];
+  process.env.FRONTEND_URL, // Define this in Vercel environment variables
+].filter(Boolean) as string[];
 
 app.use(express.json());
 app.use(cors({
   origin: (origin, callback) => {
-    console.log("Origin:", origin);
-
+    // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true);
-
-    if (
-      allowedOrigins.includes(origin) ||
-      origin.includes("vercel.app")
-    ) {
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === "development") {
       return callback(null, true);
     }
-
     return callback(new Error("Not allowed by CORS"));
   },
   credentials: true,
 }));
-app.options("*", cors());
-
 
 app.get("/", (req, res) => {
   res.json({ message: "UMKM Kasir API is running! 🚀" });
