@@ -1,5 +1,5 @@
-import {prisma} from "../../lib/prisma";
-import { CreateStockDTO, UpdateStockDTO } from "../types/stock.dto";
+import {prisma} from "../../lib/prisma.js";
+import { CreateStockDTO, UpdateStockDTO } from "../types/stock.dto.js";
 
 export const getAllStocks = async () => {
     try {

@@ -1,4 +1,4 @@
-import { prisma } from '../lib/prisma';
+import { prisma } from '../lib/prisma.js';
 import { faker } from '@faker-js/faker';
 
 // Use the shared prisma instance which is already configured with accelerateUrl

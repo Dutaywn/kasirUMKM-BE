@@ -1,5 +1,5 @@
-import { prisma } from "../../lib/prisma";
-import { CreateOrderDTO } from "../types/order.dto";
+import { prisma } from "../../lib/prisma.js";
+import { CreateOrderDTO } from "../types/order.dto.js";
 
 export const createOrder = async (data: CreateOrderDTO) => {
     const { userId, paymentMethod, paymentStatus, items } = data;
@@ -7,7 +7,11 @@ export const createOrder = async (data: CreateOrderDTO) => {
     try {
         return await prisma.$transaction(async (tx: any) => {
             let totalAmount = 0;
-            const orderItemsData = [];
+            const orderItemsData: {
+                productId: number,
+                quantity: number,
+                priceAtPurchase: number
+            }[] = [];
 
             for (const item of items) {
                 // 1. Fetch the product to get the current price and stock

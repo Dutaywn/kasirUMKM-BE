@@ -1,7 +1,7 @@
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../lib/prisma.js";
 import bcrypt from "bcryptjs";
-import { signToken } from "../../lib/jwt";
-import { RegisterDTO, LoginDTO } from "../types/auth.dto";
+import { signToken } from "../../lib/jwt.js";
+import { RegisterDTO, LoginDTO } from "../types/auth.dto.js";
 
 export const registerUser = async (data: RegisterDTO) => {
   const { email, password, userName } = data;

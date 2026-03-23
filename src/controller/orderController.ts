@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import * as orderService from "../service/orderService";
-import { CreateOrderDTO } from "../types/order.dto";
+import * as orderService from "../service/orderService.js";
+import { CreateOrderDTO } from "../types/order.dto.js";
 
 export const createOrder = async (req: Request, res: Response) => {
     try {

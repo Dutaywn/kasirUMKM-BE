@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { verifyToken, TokenPayload } from "../../lib/jwt";
+import { verifyToken, TokenPayload } from "../../lib/jwt.js";
 
 // Extend Express Request type
 export interface AuthenticatedRequest extends Request {

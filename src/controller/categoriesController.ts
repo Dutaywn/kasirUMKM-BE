@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as categoryService from "../service/categoriesService";
+import * as categoryService from "../service/categoriesService.js";
 
 export const getAllCategories = async (req: Request, res: Response) => {
     try {

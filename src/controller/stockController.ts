@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as stockService from "../service/stockService";
+import * as stockService from "../service/stockService.js";
 
 export const getAllStocks = async (req: Request, res: Response) => {
     try {

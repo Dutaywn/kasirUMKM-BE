@@ -1,5 +1,5 @@
-import {prisma} from "../../lib/prisma";
-import { CreateCategoryDTO, UpdateCategoryDTO } from "../types/category.dto";
+import {prisma} from "../../lib/prisma.js";
+import { CreateCategoryDTO, UpdateCategoryDTO } from "../types/category.dto.js";
 
 export const getAllCategories = async () => {
     try {
