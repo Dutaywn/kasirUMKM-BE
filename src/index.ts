@@ -40,7 +40,7 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
-app.options("/*", cors());
+app.options(/.*/, cors());
 
 app.get("/", (req, res) => {
   res.json({ message: "UMKM Kasir API is running! 🚀" });
