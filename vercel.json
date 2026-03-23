@@ -1,14 +1,22 @@
 {
-  "version": 2,
-  "functions": {
-    "api/index.ts": {
-      "runtime": "@vercel/node@3.0.0"
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/api/index.ts"
-    }
-  ]
+    "builds": [
+        {
+            "src": "src/index.ts",
+            "use": "@vercel/node"
+        }
+    ],
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "src/index.ts"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            }
+        }
+    ]
 }

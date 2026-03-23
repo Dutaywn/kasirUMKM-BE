@@ -27,8 +27,5 @@
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
-  "type": "module",
-  "engines": {
-    "node": "18.x"
-  }
+  "type": "module"
 }
