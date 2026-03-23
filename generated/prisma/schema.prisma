@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum PaymentMethod {
+  CASH
+  QRIS
+  TRANSFER
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+enum StockType {
+  IN
+  OUT
+  ADJUSTMENT
+}
+
+model user {
+  id           Int           @id @default(autoincrement())
+  userName     String?
+  password     String?
+  email        String?       @unique
+  role         Role          @default(USER)
+  orders       order[]
+  expenditures expenditure[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model product {
+  id         Int         @id @default(autoincrement())
+  name       String?
+  imgUrl     String?
+  price      Int?
+  categoryId Int
+  category   category    @relation(fields: [categoryId], references: [id])
+  stocks     Int
+  stockType  String
+  stockId    stock[]
+  orderItems orderItem[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model category {
+  id          Int       @id @default(autoincrement())
+  name        String?
+  description String?
+  products    product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model stock {
+  id        Int       @id @default(autoincrement())
+  type      StockType @default(IN)
+  total     Int?
+  note      String?
+  productId Int
+  product   product   @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model order {
+  id            Int           @id @default(autoincrement())
+  totalAmount   Int           @default(0)
+  paymentMethod PaymentMethod @default(CASH)
+  paymentStatus OrderStatus   @default(PENDING)
+  userId        Int
+  user          user          @relation(fields: [userId], references: [id])
+  items         orderItem[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model orderItem {
+  id              Int     @id @default(autoincrement())
+  orderId         Int
+  order           order   @relation(fields: [orderId], references: [id])
+  productId       Int
+  product         product @relation(fields: [productId], references: [id])
+  quantity        Int     @default(1)
+  priceAtPurchase Int
+}
+
+model expenditure {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  price     Int?
+  note      String?
+  userId    Int
+  user      user     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
