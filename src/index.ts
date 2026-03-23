@@ -1,10 +1,10 @@
 import express from "express";
 import "dotenv/config";
-import authRoutes from "./route/authRoutes";
-import productRoutes from "./route/productRoutes";
-import categoriesRoutes from "./route/categoriesRoutes";
-import stockRoutes from "./route/stockRoutes";
-import orderRoutes from "./route/orderRoutes";
+import authRoutes from "./route/authRoutes.js";
+import productRoutes from "./route/productRoutes.js";
+import categoriesRoutes from "./route/categoriesRoutes.js";
+import stockRoutes from "./route/stockRoutes.js";
+import orderRoutes from "./route/orderRoutes.js";
 import cors from "cors";
 
 const corsOptions = {
