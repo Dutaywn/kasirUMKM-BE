@@ -15,8 +15,28 @@ const corsOptions = {
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// CORS setup: Allow frontend or dynamic origin in production
+const allowedOrigins = [
+  "http://localhost:3000",
+  process.env.FRONTEND_URL, // Define this in Vercel environment variables
+].filter(Boolean) as string[];
+
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === "development") {
+      return callback(null, true);
+    }
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+}));
+
+app.get("/", (req, res) => {
+  res.json({ message: "UMKM Kasir API is running! 🚀" });
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
@@ -24,14 +44,12 @@ app.use("/api/categories", categoriesRoutes);
 app.use("/api/stocks", stockRoutes);
 app.use("/api/orders", orderRoutes);
 
-// app.get("/api/test", (req, res) => {
-//   res.json({ message: "Server is running! 🚀" });
-// });
+// Export for Vercel serverless functions
+export default app;
 
-// app.use("/api/product", productRoutes);
-// app.use("/api/categories", categoriesRoutes);
-// app.use("/api/stock", stockRoutes);
-
-app.listen(PORT, () => {
-  console.log(`\n✅ Server is running at http://localhost:${PORT}`);
-});
+// Listen only when running directly (not as a serverless function)
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`\n✅ Server is running at http://localhost:${PORT}`);
+  });
+}

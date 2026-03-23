@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@faker-js/faker": "^10.3.0",
