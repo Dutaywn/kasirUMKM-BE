@@ -2,7 +2,7 @@ import { prisma } from "../../lib/prisma.js";
 import { CreateOrderDTO } from "../types/order.dto.js";
 
 export const createOrder = async (data: CreateOrderDTO) => {
-    const { userId, paymentMethod, paymentStatus, items } = data;
+    const { userId, paymentMethod, items } = data;
 
     try {
         return await prisma.$transaction(async (tx: any) => {
@@ -58,7 +58,7 @@ export const createOrder = async (data: CreateOrderDTO) => {
                     }
                 });
             }
-            const statusPayment = paymentStatus == "CASH" ? "PAID" : "PENDING";
+            const statusPayment = paymentMethod === "CASH" ? "PAID" : "PENDING";
 
             // 5. Create the order
             const order = await tx.order.create({
