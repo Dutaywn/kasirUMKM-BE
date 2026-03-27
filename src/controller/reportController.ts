@@ -65,6 +65,12 @@ export const generateDailyReport = async (req: Request, res: Response) => {
       });
     }
 
+    const existingReport = await prisma.reportSummary.findUnique({
+      where: {
+        date_periodType: { date: startOfDay, periodType: "DAILY" },
+      },
+    });
+
     const savedReport = await prisma.reportSummary.upsert({
       where: {
         date_periodType: { date: startOfDay, periodType: "DAILY" },
@@ -88,7 +94,9 @@ export const generateDailyReport = async (req: Request, res: Response) => {
     });
 
     res.status(200).json({
-      message: "Laporan harian berhasil di-generate dan disimpan.",
+      message: existingReport
+        ? "Laporan hari ini sudah ada, data berhasil diperbarui (Update Tutup Buku)."
+        : "Laporan harian berhasil di-generate dan disimpan.",
       data: savedReport,
     });
   } catch (error) {
@@ -108,5 +116,21 @@ export const getReports = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error fetching reports:", error);
     res.status(500).json({ message: "Gagal mengambil data laporan." });
+  }
+};
+
+export const deleteReport = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const deletedReport = await prisma.reportSummary.delete({
+      where: { id: parseInt(id as string) },
+    });
+    res.status(200).json({
+      message: "Laporan berhasil dihapus.",
+      data: deletedReport,
+    });
+  } catch (error) {
+    console.error("Error deleting report:", error);
+    res.status(500).json({ message: "Gagal menghapus laporan. Pastikan ID valid." });
   }
 };
