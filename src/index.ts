@@ -6,6 +6,7 @@ import categoriesRoutes from "./route/categoriesRoutes.js";
 import stockRoutes from "./route/stockRoutes.js";
 import orderRoutes from "./route/orderRoutes.js";
 import reportRoutes from "./route/reportRoutes.js";
+import expenditureRoutes from "./route/expenditureRoutes.js";
 import cors from "cors";
 
 const app = express();
@@ -42,6 +43,7 @@ app.use("/api/categories", categoriesRoutes);
 app.use("/api/stocks", stockRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/reports", reportRoutes);
+app.use("/api/expenditures", expenditureRoutes);
 // Export for Vercel serverless functions
 export default app;
 
