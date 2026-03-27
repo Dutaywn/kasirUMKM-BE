@@ -58,6 +58,7 @@ export const createOrder = async (data: CreateOrderDTO) => {
                     }
                 });
             }
+            const statusPayment = paymentStatus == "CASH" ? "PAID" : "PENDING";
 
             // 5. Create the order
             const order = await tx.order.create({
@@ -65,7 +66,7 @@ export const createOrder = async (data: CreateOrderDTO) => {
                     userId,
                     totalAmount,
                     paymentMethod,
-                    paymentStatus: paymentStatus || "PENDING",
+                    paymentStatus: statusPayment,
                     items: {
                         create: orderItemsData,
                     },
