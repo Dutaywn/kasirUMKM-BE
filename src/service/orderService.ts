@@ -95,20 +95,54 @@ export const getAllOrders = async (page: number = 1, limit: number = 10, search?
 
         const where: any = {};
         if (search) {
-            where.OR = [
-                { paymentMethod: { contains: search, mode: 'insensitive' } },
-                { paymentStatus: { contains: search, mode: 'insensitive' } },
-                { user: { userName: { contains: search, mode: 'insensitive' } } },
+            // Clean the search string (remove quotes and extra whitespace)
+            const cleanSearch = search.replace(/["]/g, "").trim();
+            const upperSearch = cleanSearch.toUpperCase();
+
+            // Valid enum values from schema
+            const validPaymentMethods = ["CASH", "QRIS", "TRANSFER"];
+            const validOrderStatuses = ["PENDING", "PAID", "CANCELLED"];
+
+            // Base conditions for non-enum fields
+            const orConditions: any[] = [
+                { user: { userName: { contains: cleanSearch, mode: "insensitive" } } },
                 {
                     items: {
                         some: {
                             product: {
-                                name: { contains: search, mode: 'insensitive' }
+                                name: { contains: cleanSearch, mode: "insensitive" }
                             }
                         }
                     }
                 }
             ];
+
+            // Only add Enum fields if search term exactly matches an enum value
+            if (validPaymentMethods.includes(upperSearch)) {
+                orConditions.push({ paymentMethod: upperSearch });
+            }
+            if (validOrderStatuses.includes(upperSearch)) {
+                orConditions.push({ paymentStatus: upperSearch });
+            }
+
+            // Check if the search term is a valid date (YYYY-MM-DD format)
+            const dateRegex = /^\d{4}-\d{1,2}-\d{1,2}$/;
+            if (dateRegex.test(cleanSearch)) {
+                const startDate = new Date(cleanSearch);
+                if (startDate.toString() !== "Invalid Date") {
+                    const endDate = new Date(startDate);
+                    endDate.setDate(startDate.getDate() + 1);
+
+                    orConditions.push({
+                        createdAt: {
+                            gte: startDate,
+                            lt: endDate
+                        }
+                    });
+                }
+            }
+
+            where.OR = orConditions;
         }
 
         const [orders, total] = await Promise.all([
