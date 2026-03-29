@@ -2,24 +2,45 @@ import { prisma } from "../../lib/prisma.js";
 import { CreateProductDTO, UpdateProductDTO } from "../types/product.dto.js";
 
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (page: number = 1, limit: number = 10, search?: string) => {
     try {
-        const products = await prisma.product.findMany({
-            include: {
-                category: {
-                    select: {
-                        name: true,
-                    }
+        const skip = (page - 1) * limit;
+        const take = limit;
+
+        const where: any = {};
+        if (search) {
+            where.OR = [
+                { name: { contains: search, mode: 'insensitive' } },
+                { category: { name: { contains: search, mode: 'insensitive' } } }
+            ];
+        }
+
+        const [products, total] = await Promise.all([
+            prisma.product.findMany({
+                where,
+                skip,
+                take,
+                include: {
+                    category: {
+                        select: {
+                            name: true,
+                        }
+                    },
+                    stockId: {
+                        select: {
+                            id: true,
+                            total: true,
+                        }
+                    },
                 },
-                stockId: {
-                    select: {
-                        id: true,
-                        total: true,
-                    }
+                orderBy: {
+                    createdAt: "desc",
                 },
-            },
-        });
-        return products;
+            }),
+            prisma.product.count({ where }),
+        ]);
+
+        return { products, total };
     } catch (error) {
         throw error;
     }

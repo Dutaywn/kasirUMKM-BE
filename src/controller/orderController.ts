@@ -19,10 +19,24 @@ export const createOrder = async (req: Request, res: Response) => {
 
 export const getAllOrders = async (req: Request, res: Response) => {
     try {
-        const orders = await orderService.getAllOrders();
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+        const search = req.query.search as string;
+
+        const { orders, total } = await orderService.getAllOrders(page, limit, search);
+        
+        const totalPages = Math.ceil(total / limit);
+
         res.status(200).json({
             message: "Orders retrieved successfully",
-            data: orders
+            data: orders,
+            pagination: {
+                page,
+                limit,
+                totalItems: total,
+                totalPages,
+                hasNextPage: page < totalPages
+            }
         });
     } catch (error: any) {
         res.status(500).json({

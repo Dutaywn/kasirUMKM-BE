@@ -1,23 +1,41 @@
 import { prisma } from "../../lib/prisma.js";
 import { CreateExpenditureDTO, UpdateExpenditureDTO } from "../types/expenditure.dto.js";
 
-export const getAllExpenditures = async () => {
+export const getAllExpenditures = async (page: number = 1, limit: number = 10, search?: string) => {
     try {
-        const expenditures = await prisma.expenditure.findMany({
-            include: {
-                user: {
-                    select: {
-                        id: true,
-                        userName: true,
-                        email: true,
+        const skip = (page - 1) * limit;
+        const take = limit;
+
+        const where: any = {};
+        if (search) {
+            where.OR = [
+                { name: { contains: search, mode: 'insensitive' } },
+                { note: { contains: search, mode: 'insensitive' } }
+            ];
+        }
+
+        const [expenditures, total] = await Promise.all([
+            prisma.expenditure.findMany({
+                where,
+                skip,
+                take,
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            userName: true,
+                            email: true,
+                        },
                     },
                 },
-            },
-            orderBy: {
-                createdAt: "desc",
-            },
-        });
-        return expenditures;
+                orderBy: {
+                    createdAt: "desc",
+                },
+            }),
+            prisma.expenditure.count({ where }),
+        ]);
+
+        return { expenditures, total };
     } catch (error) {
         throw error;
     }

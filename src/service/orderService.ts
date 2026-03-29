@@ -88,27 +88,56 @@ export const createOrder = async (data: CreateOrderDTO) => {
     }
 };
 
-export const getAllOrders = async () => {
+export const getAllOrders = async (page: number = 1, limit: number = 10, search?: string) => {
     try {
-        return await prisma.order.findMany({
-            include: {
-                items: {
-                    include: {
-                        product: true
-                    }
-                },
-                user: {
-                    select: {
-                        id: true,
-                        userName: true,
-                        email: true
+        const skip = (page - 1) * limit;
+        const take = limit;
+
+        const where: any = {};
+        if (search) {
+            where.OR = [
+                { paymentMethod: { contains: search, mode: 'insensitive' } },
+                { paymentStatus: { contains: search, mode: 'insensitive' } },
+                { user: { userName: { contains: search, mode: 'insensitive' } } },
+                {
+                    items: {
+                        some: {
+                            product: {
+                                name: { contains: search, mode: 'insensitive' }
+                            }
+                        }
                     }
                 }
-            },
-            orderBy: {
-                createdAt: "desc"
-            }
-        });
+            ];
+        }
+
+        const [orders, total] = await Promise.all([
+            prisma.order.findMany({
+                where,
+                skip,
+                take,
+                include: {
+                    items: {
+                        include: {
+                            product: true
+                        }
+                    },
+                    user: {
+                        select: {
+                            id: true,
+                            userName: true,
+                            email: true
+                        }
+                    }
+                },
+                orderBy: {
+                    createdAt: "desc"
+                }
+            }),
+            prisma.order.count({ where }),
+        ]);
+
+        return { orders, total };
     } catch (error) {
         throw error;
     }

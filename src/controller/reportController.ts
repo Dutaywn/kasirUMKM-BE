@@ -107,12 +107,40 @@ export const generateDailyReport = async (req: Request, res: Response) => {
 
 export const getReports = async (req: Request, res: Response) => {
   try {
-    const { period } = req.query; // DAILY, MONTHLY, YEARLY
-    const reports = await prisma.reportSummary.findMany({
-      where: period ? { periodType: period as string } : undefined,
-      orderBy: { date: "desc" },
+    const { period, search } = req.query; // DAILY, MONTHLY, YEARLY, search keyword
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+
+    const where: any = period ? { periodType: period as string } : {};
+    
+    if (search) {
+      where.periodType = { contains: search, mode: 'insensitive' };
+    }
+
+    const [reports, total] = await Promise.all([
+      prisma.reportSummary.findMany({
+        where,
+        orderBy: { date: "desc" },
+        skip,
+        take: limit,
+      }),
+      prisma.reportSummary.count({ where }),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+
+    res.status(200).json({
+      message: "Reports fetched successfully",
+      data: reports,
+      pagination: {
+        page,
+        limit,
+        totalItems: total,
+        totalPages,
+        hasNextPage: page < totalPages
+      }
     });
-    res.status(200).json(reports);
   } catch (error) {
     console.error("Error fetching reports:", error);
     res.status(500).json({ message: "Gagal mengambil data laporan." });

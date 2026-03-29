@@ -3,10 +3,24 @@ import * as expenditureService from "../service/expenditureService.js";
 
 export const getAllExpenditures = async (req: Request, res: Response) => {
     try {
-        const expenditures = await expenditureService.getAllExpenditures();
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+        const search = req.query.search as string;
+
+        const { expenditures, total } = await expenditureService.getAllExpenditures(page, limit, search);
+        
+        const totalPages = Math.ceil(total / limit);
+
         res.status(200).json({
             message: "Expenditures fetched successfully",
             data: expenditures,
+            pagination: {
+                page,
+                limit,
+                totalItems: total,
+                totalPages,
+                hasNextPage: page < totalPages
+            }
         });
     } catch (error: any) {
         res.status(400).json({ message: error.message });

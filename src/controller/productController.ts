@@ -3,10 +3,24 @@ import * as productService from "../service/productService.js";
 
 export const getAllProducts = async (req: Request, res: Response) => {
     try {
-        const products = await productService.getAllProducts();
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+        const search = req.query.search as string;
+
+        const { products, total } = await productService.getAllProducts(page, limit, search);
+        
+        const totalPages = Math.ceil(total / limit);
+
         res.status(200).json({
             message: "Products fetched successfully",
             data: products,
+            pagination: {
+                page,
+                limit,
+                totalItems: total,
+                totalPages,
+                hasNextPage: page < totalPages
+            }
         });
     } catch (error: any) {
         res.status(400).json({ message: error.message });
