@@ -95,18 +95,19 @@ export const getAllOrders = async (page: number = 1, limit: number = 10, search?
 
         const where: any = {};
         if (search) {
-            // Clean the search string (remove quotes and extra whitespace)
-            const cleanSearch = search.replace(/["]/g, "").trim();
+            const cleanSearch = search.replace(/"/g, "").trim();
             const upperSearch = cleanSearch.toUpperCase();
 
-            // Valid enum values from schema
-            const validPaymentMethods = ["CASH", "QRIS", "TRANSFER"];
-            const validOrderStatuses = ["PENDING", "PAID", "CANCELLED"];
+            const orConditions: any[] = [];
 
-            // Base conditions for non-enum fields
-            const orConditions: any[] = [
-                { user: { userName: { contains: cleanSearch, mode: "insensitive" } } },
-                {
+            // 🔹 simple search (fast)
+            orConditions.push({
+                user: { userName: { contains: cleanSearch, mode: "insensitive" } }
+            });
+
+            // 🔹 heavy search (optional)
+            if (cleanSearch.length >= 3) {
+                orConditions.push({
                     items: {
                         some: {
                             product: {
@@ -114,29 +115,32 @@ export const getAllOrders = async (page: number = 1, limit: number = 10, search?
                             }
                         }
                     }
+                });
+            }
+
+            // 🔹 enum
+            const enumMap = {
+                paymentMethod: ["CASH", "QRIS", "TRANSFER"],
+                paymentStatus: ["PENDING", "PAID", "CANCELLED"]
+            };
+
+            Object.entries(enumMap).forEach(([field, values]) => {
+                if (values.includes(upperSearch)) {
+                    orConditions.push({ [field]: upperSearch });
                 }
-            ];
+            });
 
-            // Only add Enum fields if search term exactly matches an enum value
-            if (validPaymentMethods.includes(upperSearch)) {
-                orConditions.push({ paymentMethod: upperSearch });
-            }
-            if (validOrderStatuses.includes(upperSearch)) {
-                orConditions.push({ paymentStatus: upperSearch });
-            }
-
-            // Check if the search term is a valid date (YYYY-MM-DD format)
+            // 🔹 date
             const dateRegex = /^\d{4}-\d{1,2}-\d{1,2}$/;
             if (dateRegex.test(cleanSearch)) {
-                const startDate = new Date(cleanSearch);
-                if (startDate.toString() !== "Invalid Date") {
-                    const endDate = new Date(startDate);
-                    endDate.setDate(startDate.getDate() + 1);
+                const startDate = new Date(`${cleanSearch}T00:00:00.000Z`);
+                const endDate = new Date(`${cleanSearch}T23:59:59.999Z`);
 
+                if (!isNaN(startDate.getTime())) {
                     orConditions.push({
                         createdAt: {
                             gte: startDate,
-                            lt: endDate
+                            lte: endDate
                         }
                     });
                 }
