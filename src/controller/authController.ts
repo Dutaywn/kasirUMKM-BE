@@ -40,7 +40,7 @@ export const googleCallback = async (req: Request, res: Response) => {
   const user = (req as any).user;
 
   if (!user) {
-    return res.redirect(`${process.env.FRONTEND_URL}/login?error=auth_failed`);
+    return res.redirect(`${process.env.FRONTEND_URL}/page/login?error=auth_failed`);
   }
 
   const { signToken } = await import("../../lib/jwt.js");
@@ -51,7 +51,7 @@ export const googleCallback = async (req: Request, res: Response) => {
   });
 
   // Redirect to frontend with token
-  res.redirect(`${process.env.FRONTEND_URL}/auth-success?token=${token}`);
+  res.redirect(`${process.env.FRONTEND_URL}/page/auth-success?token=${token}`);
 };
 
 export const getMe = async (req: AuthenticatedRequest, res: Response) => {
