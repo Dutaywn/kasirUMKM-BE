@@ -55,6 +55,10 @@ model product {
   orderItems orderItem[]
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
+
+  @@index([name])
+  @@index([categoryId])
+  @@index([createdAt])
 }
 
 model category {
@@ -64,6 +68,8 @@ model category {
   products    product[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+
+  @@index([name])
 }
 
 model stock {
@@ -75,6 +81,9 @@ model stock {
   product   product   @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  @@index([productId])
+  @@index([type])
 }
 
 model order {
@@ -88,6 +97,11 @@ model order {
   items         orderItem[]
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([paymentStatus])
+  @@index([paymentMethod])
+  @@index([createdAt])
 }
 
 model orderItem {
@@ -98,6 +112,9 @@ model orderItem {
   product         product @relation(fields: [productId], references: [id])
   quantity        Int     @default(1)
   priceAtPurchase Int
+
+  @@index([orderId])
+  @@index([productId])
 }
 
 model expenditure {
@@ -109,6 +126,10 @@ model expenditure {
   user      user     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([name])
+  @@index([createdAt])
 }
 
 model reportSummary {
