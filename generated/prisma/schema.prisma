@@ -79,6 +79,7 @@ model stock {
 
 model order {
   id            Int           @id @default(autoincrement())
+  orderCode     String        @unique @default(uuid())
   totalAmount   Int           @default(0)
   paymentMethod PaymentMethod @default(CASH)
   paymentStatus OrderStatus   @default(PENDING)
@@ -105,7 +106,22 @@ model expenditure {
   price     Int?
   note      String?
   userId    Int
-  user      user     @relation(fields: [userId], references: [id])
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model reportSummary {
+  id              Int      @id @default(autoincrement())
+  date            DateTime
+  periodType      String
+  totalIncome     Int      @default(0)
+  totalExpense    Int      @default(0)
+  netProfit       Int      @default(0)
+  totalOrders     Int      @default(0)
+  topProductsData Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([date, periodType])
 }

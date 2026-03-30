@@ -162,6 +162,7 @@ exports.Prisma.StockScalarFieldEnum = {
 
 exports.Prisma.OrderScalarFieldEnum = {
   id: 'id',
+  orderCode: 'orderCode',
   totalAmount: 'totalAmount',
   paymentMethod: 'paymentMethod',
   paymentStatus: 'paymentStatus',
@@ -188,9 +189,27 @@ exports.Prisma.ExpenditureScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ReportSummaryScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  periodType: 'periodType',
+  totalIncome: 'totalIncome',
+  totalExpense: 'totalExpense',
+  netProfit: 'netProfit',
+  totalOrders: 'totalOrders',
+  topProductsData: 'topProductsData',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -201,6 +220,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.Role = exports.$Enums.Role = {
   ADMIN: 'ADMIN',
@@ -232,7 +257,8 @@ exports.Prisma.ModelName = {
   stock: 'stock',
   order: 'order',
   orderItem: 'orderItem',
-  expenditure: 'expenditure'
+  expenditure: 'expenditure',
+  reportSummary: 'reportSummary'
 };
 
 /**

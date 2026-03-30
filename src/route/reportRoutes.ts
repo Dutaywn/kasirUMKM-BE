@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { generateDailyReport, getReports, deleteReport } from "../controller/reportController.js";
+import { generateReport, getReports, deleteReport } from "../controller/reportController.js";
 
 const router = Router();
 
-router.post("/generate-daily", generateDailyReport);
+router.post("/generate", generateReport);
 router.get("/", getReports);
 router.delete("/:id", deleteReport);
 

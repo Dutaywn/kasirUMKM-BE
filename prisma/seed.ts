@@ -1,7 +1,8 @@
-import { prisma } from '../lib/prisma.js';
-import { faker } from '@faker-js/faker';
 
-// Use the shared prisma instance which is already configured with accelerateUrl
+import { faker } from '@faker-js/faker';
+import { prisma } from '../lib/prisma.js';
+
+// Use the shared prismaClient instance which is already configured with accelerateUrl
 
 async function main() {
   console.log('Starting seeding...');

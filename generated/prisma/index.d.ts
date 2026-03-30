@@ -48,6 +48,11 @@ export type orderItem = $Result.DefaultSelection<Prisma.$orderItemPayload>
  * 
  */
 export type expenditure = $Result.DefaultSelection<Prisma.$expenditurePayload>
+/**
+ * Model reportSummary
+ * 
+ */
+export type reportSummary = $Result.DefaultSelection<Prisma.$reportSummaryPayload>
 
 /**
  * Enums
@@ -295,6 +300,16 @@ export class PrismaClient<
     * ```
     */
   get expenditure(): Prisma.expenditureDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.reportSummary`: Exposes CRUD operations for the **reportSummary** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ReportSummaries
+    * const reportSummaries = await prisma.reportSummary.findMany()
+    * ```
+    */
+  get reportSummary(): Prisma.reportSummaryDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -735,7 +750,8 @@ export namespace Prisma {
     stock: 'stock',
     order: 'order',
     orderItem: 'orderItem',
-    expenditure: 'expenditure'
+    expenditure: 'expenditure',
+    reportSummary: 'reportSummary'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -751,7 +767,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "product" | "category" | "stock" | "order" | "orderItem" | "expenditure"
+      modelProps: "user" | "product" | "category" | "stock" | "order" | "orderItem" | "expenditure" | "reportSummary"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1273,6 +1289,80 @@ export namespace Prisma {
           }
         }
       }
+      reportSummary: {
+        payload: Prisma.$reportSummaryPayload<ExtArgs>
+        fields: Prisma.reportSummaryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.reportSummaryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reportSummaryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.reportSummaryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reportSummaryPayload>
+          }
+          findFirst: {
+            args: Prisma.reportSummaryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reportSummaryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.reportSummaryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reportSummaryPayload>
+          }
+          findMany: {
+            args: Prisma.reportSummaryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reportSummaryPayload>[]
+          }
+          create: {
+            args: Prisma.reportSummaryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reportSummaryPayload>
+          }
+          createMany: {
+            args: Prisma.reportSummaryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.reportSummaryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reportSummaryPayload>[]
+          }
+          delete: {
+            args: Prisma.reportSummaryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reportSummaryPayload>
+          }
+          update: {
+            args: Prisma.reportSummaryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reportSummaryPayload>
+          }
+          deleteMany: {
+            args: Prisma.reportSummaryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.reportSummaryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.reportSummaryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reportSummaryPayload>[]
+          }
+          upsert: {
+            args: Prisma.reportSummaryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reportSummaryPayload>
+          }
+          aggregate: {
+            args: Prisma.ReportSummaryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReportSummary>
+          }
+          groupBy: {
+            args: Prisma.reportSummaryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ReportSummaryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.reportSummaryCountArgs<ExtArgs>
+            result: $Utils.Optional<ReportSummaryCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1388,6 +1478,7 @@ export namespace Prisma {
     order?: orderOmit
     orderItem?: orderItemOmit
     expenditure?: expenditureOmit
+    reportSummary?: reportSummaryOmit
   }
 
   /* Types for Logging */
@@ -6257,6 +6348,7 @@ export namespace Prisma {
 
   export type OrderMinAggregateOutputType = {
     id: number | null
+    orderCode: string | null
     totalAmount: number | null
     paymentMethod: $Enums.PaymentMethod | null
     paymentStatus: $Enums.OrderStatus | null
@@ -6267,6 +6359,7 @@ export namespace Prisma {
 
   export type OrderMaxAggregateOutputType = {
     id: number | null
+    orderCode: string | null
     totalAmount: number | null
     paymentMethod: $Enums.PaymentMethod | null
     paymentStatus: $Enums.OrderStatus | null
@@ -6277,6 +6370,7 @@ export namespace Prisma {
 
   export type OrderCountAggregateOutputType = {
     id: number
+    orderCode: number
     totalAmount: number
     paymentMethod: number
     paymentStatus: number
@@ -6301,6 +6395,7 @@ export namespace Prisma {
 
   export type OrderMinAggregateInputType = {
     id?: true
+    orderCode?: true
     totalAmount?: true
     paymentMethod?: true
     paymentStatus?: true
@@ -6311,6 +6406,7 @@ export namespace Prisma {
 
   export type OrderMaxAggregateInputType = {
     id?: true
+    orderCode?: true
     totalAmount?: true
     paymentMethod?: true
     paymentStatus?: true
@@ -6321,6 +6417,7 @@ export namespace Prisma {
 
   export type OrderCountAggregateInputType = {
     id?: true
+    orderCode?: true
     totalAmount?: true
     paymentMethod?: true
     paymentStatus?: true
@@ -6418,6 +6515,7 @@ export namespace Prisma {
 
   export type OrderGroupByOutputType = {
     id: number
+    orderCode: string
     totalAmount: number
     paymentMethod: $Enums.PaymentMethod
     paymentStatus: $Enums.OrderStatus
@@ -6447,6 +6545,7 @@ export namespace Prisma {
 
   export type orderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    orderCode?: boolean
     totalAmount?: boolean
     paymentMethod?: boolean
     paymentStatus?: boolean
@@ -6460,6 +6559,7 @@ export namespace Prisma {
 
   export type orderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    orderCode?: boolean
     totalAmount?: boolean
     paymentMethod?: boolean
     paymentStatus?: boolean
@@ -6471,6 +6571,7 @@ export namespace Prisma {
 
   export type orderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    orderCode?: boolean
     totalAmount?: boolean
     paymentMethod?: boolean
     paymentStatus?: boolean
@@ -6482,6 +6583,7 @@ export namespace Prisma {
 
   export type orderSelectScalar = {
     id?: boolean
+    orderCode?: boolean
     totalAmount?: boolean
     paymentMethod?: boolean
     paymentStatus?: boolean
@@ -6490,7 +6592,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type orderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "totalAmount" | "paymentMethod" | "paymentStatus" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+  export type orderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderCode" | "totalAmount" | "paymentMethod" | "paymentStatus" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
   export type orderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | userDefaultArgs<ExtArgs>
     items?: boolean | order$itemsArgs<ExtArgs>
@@ -6511,6 +6613,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      orderCode: string
       totalAmount: number
       paymentMethod: $Enums.PaymentMethod
       paymentStatus: $Enums.OrderStatus
@@ -6943,6 +7046,7 @@ export namespace Prisma {
    */
   interface orderFieldRefs {
     readonly id: FieldRef<"order", 'Int'>
+    readonly orderCode: FieldRef<"order", 'String'>
     readonly totalAmount: FieldRef<"order", 'Int'>
     readonly paymentMethod: FieldRef<"order", 'PaymentMethod'>
     readonly paymentStatus: FieldRef<"order", 'OrderStatus'>
@@ -9645,6 +9749,1117 @@ export namespace Prisma {
 
 
   /**
+   * Model reportSummary
+   */
+
+  export type AggregateReportSummary = {
+    _count: ReportSummaryCountAggregateOutputType | null
+    _avg: ReportSummaryAvgAggregateOutputType | null
+    _sum: ReportSummarySumAggregateOutputType | null
+    _min: ReportSummaryMinAggregateOutputType | null
+    _max: ReportSummaryMaxAggregateOutputType | null
+  }
+
+  export type ReportSummaryAvgAggregateOutputType = {
+    id: number | null
+    totalIncome: number | null
+    totalExpense: number | null
+    netProfit: number | null
+    totalOrders: number | null
+  }
+
+  export type ReportSummarySumAggregateOutputType = {
+    id: number | null
+    totalIncome: number | null
+    totalExpense: number | null
+    netProfit: number | null
+    totalOrders: number | null
+  }
+
+  export type ReportSummaryMinAggregateOutputType = {
+    id: number | null
+    date: Date | null
+    periodType: string | null
+    totalIncome: number | null
+    totalExpense: number | null
+    netProfit: number | null
+    totalOrders: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ReportSummaryMaxAggregateOutputType = {
+    id: number | null
+    date: Date | null
+    periodType: string | null
+    totalIncome: number | null
+    totalExpense: number | null
+    netProfit: number | null
+    totalOrders: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ReportSummaryCountAggregateOutputType = {
+    id: number
+    date: number
+    periodType: number
+    totalIncome: number
+    totalExpense: number
+    netProfit: number
+    totalOrders: number
+    topProductsData: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ReportSummaryAvgAggregateInputType = {
+    id?: true
+    totalIncome?: true
+    totalExpense?: true
+    netProfit?: true
+    totalOrders?: true
+  }
+
+  export type ReportSummarySumAggregateInputType = {
+    id?: true
+    totalIncome?: true
+    totalExpense?: true
+    netProfit?: true
+    totalOrders?: true
+  }
+
+  export type ReportSummaryMinAggregateInputType = {
+    id?: true
+    date?: true
+    periodType?: true
+    totalIncome?: true
+    totalExpense?: true
+    netProfit?: true
+    totalOrders?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ReportSummaryMaxAggregateInputType = {
+    id?: true
+    date?: true
+    periodType?: true
+    totalIncome?: true
+    totalExpense?: true
+    netProfit?: true
+    totalOrders?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ReportSummaryCountAggregateInputType = {
+    id?: true
+    date?: true
+    periodType?: true
+    totalIncome?: true
+    totalExpense?: true
+    netProfit?: true
+    totalOrders?: true
+    topProductsData?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ReportSummaryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which reportSummary to aggregate.
+     */
+    where?: reportSummaryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of reportSummaries to fetch.
+     */
+    orderBy?: reportSummaryOrderByWithRelationInput | reportSummaryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: reportSummaryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` reportSummaries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` reportSummaries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned reportSummaries
+    **/
+    _count?: true | ReportSummaryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ReportSummaryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ReportSummarySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ReportSummaryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ReportSummaryMaxAggregateInputType
+  }
+
+  export type GetReportSummaryAggregateType<T extends ReportSummaryAggregateArgs> = {
+        [P in keyof T & keyof AggregateReportSummary]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReportSummary[P]>
+      : GetScalarType<T[P], AggregateReportSummary[P]>
+  }
+
+
+
+
+  export type reportSummaryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: reportSummaryWhereInput
+    orderBy?: reportSummaryOrderByWithAggregationInput | reportSummaryOrderByWithAggregationInput[]
+    by: ReportSummaryScalarFieldEnum[] | ReportSummaryScalarFieldEnum
+    having?: reportSummaryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ReportSummaryCountAggregateInputType | true
+    _avg?: ReportSummaryAvgAggregateInputType
+    _sum?: ReportSummarySumAggregateInputType
+    _min?: ReportSummaryMinAggregateInputType
+    _max?: ReportSummaryMaxAggregateInputType
+  }
+
+  export type ReportSummaryGroupByOutputType = {
+    id: number
+    date: Date
+    periodType: string
+    totalIncome: number
+    totalExpense: number
+    netProfit: number
+    totalOrders: number
+    topProductsData: JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    _count: ReportSummaryCountAggregateOutputType | null
+    _avg: ReportSummaryAvgAggregateOutputType | null
+    _sum: ReportSummarySumAggregateOutputType | null
+    _min: ReportSummaryMinAggregateOutputType | null
+    _max: ReportSummaryMaxAggregateOutputType | null
+  }
+
+  type GetReportSummaryGroupByPayload<T extends reportSummaryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ReportSummaryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ReportSummaryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ReportSummaryGroupByOutputType[P]>
+            : GetScalarType<T[P], ReportSummaryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type reportSummarySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    date?: boolean
+    periodType?: boolean
+    totalIncome?: boolean
+    totalExpense?: boolean
+    netProfit?: boolean
+    totalOrders?: boolean
+    topProductsData?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["reportSummary"]>
+
+  export type reportSummarySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    date?: boolean
+    periodType?: boolean
+    totalIncome?: boolean
+    totalExpense?: boolean
+    netProfit?: boolean
+    totalOrders?: boolean
+    topProductsData?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["reportSummary"]>
+
+  export type reportSummarySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    date?: boolean
+    periodType?: boolean
+    totalIncome?: boolean
+    totalExpense?: boolean
+    netProfit?: boolean
+    totalOrders?: boolean
+    topProductsData?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["reportSummary"]>
+
+  export type reportSummarySelectScalar = {
+    id?: boolean
+    date?: boolean
+    periodType?: boolean
+    totalIncome?: boolean
+    totalExpense?: boolean
+    netProfit?: boolean
+    totalOrders?: boolean
+    topProductsData?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type reportSummaryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "date" | "periodType" | "totalIncome" | "totalExpense" | "netProfit" | "totalOrders" | "topProductsData" | "createdAt" | "updatedAt", ExtArgs["result"]["reportSummary"]>
+
+  export type $reportSummaryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "reportSummary"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      date: Date
+      periodType: string
+      totalIncome: number
+      totalExpense: number
+      netProfit: number
+      totalOrders: number
+      topProductsData: Prisma.JsonValue | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["reportSummary"]>
+    composites: {}
+  }
+
+  type reportSummaryGetPayload<S extends boolean | null | undefined | reportSummaryDefaultArgs> = $Result.GetResult<Prisma.$reportSummaryPayload, S>
+
+  type reportSummaryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<reportSummaryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ReportSummaryCountAggregateInputType | true
+    }
+
+  export interface reportSummaryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['reportSummary'], meta: { name: 'reportSummary' } }
+    /**
+     * Find zero or one ReportSummary that matches the filter.
+     * @param {reportSummaryFindUniqueArgs} args - Arguments to find a ReportSummary
+     * @example
+     * // Get one ReportSummary
+     * const reportSummary = await prisma.reportSummary.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends reportSummaryFindUniqueArgs>(args: SelectSubset<T, reportSummaryFindUniqueArgs<ExtArgs>>): Prisma__reportSummaryClient<$Result.GetResult<Prisma.$reportSummaryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ReportSummary that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {reportSummaryFindUniqueOrThrowArgs} args - Arguments to find a ReportSummary
+     * @example
+     * // Get one ReportSummary
+     * const reportSummary = await prisma.reportSummary.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends reportSummaryFindUniqueOrThrowArgs>(args: SelectSubset<T, reportSummaryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__reportSummaryClient<$Result.GetResult<Prisma.$reportSummaryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReportSummary that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {reportSummaryFindFirstArgs} args - Arguments to find a ReportSummary
+     * @example
+     * // Get one ReportSummary
+     * const reportSummary = await prisma.reportSummary.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends reportSummaryFindFirstArgs>(args?: SelectSubset<T, reportSummaryFindFirstArgs<ExtArgs>>): Prisma__reportSummaryClient<$Result.GetResult<Prisma.$reportSummaryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReportSummary that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {reportSummaryFindFirstOrThrowArgs} args - Arguments to find a ReportSummary
+     * @example
+     * // Get one ReportSummary
+     * const reportSummary = await prisma.reportSummary.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends reportSummaryFindFirstOrThrowArgs>(args?: SelectSubset<T, reportSummaryFindFirstOrThrowArgs<ExtArgs>>): Prisma__reportSummaryClient<$Result.GetResult<Prisma.$reportSummaryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ReportSummaries that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {reportSummaryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ReportSummaries
+     * const reportSummaries = await prisma.reportSummary.findMany()
+     * 
+     * // Get first 10 ReportSummaries
+     * const reportSummaries = await prisma.reportSummary.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const reportSummaryWithIdOnly = await prisma.reportSummary.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends reportSummaryFindManyArgs>(args?: SelectSubset<T, reportSummaryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$reportSummaryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ReportSummary.
+     * @param {reportSummaryCreateArgs} args - Arguments to create a ReportSummary.
+     * @example
+     * // Create one ReportSummary
+     * const ReportSummary = await prisma.reportSummary.create({
+     *   data: {
+     *     // ... data to create a ReportSummary
+     *   }
+     * })
+     * 
+     */
+    create<T extends reportSummaryCreateArgs>(args: SelectSubset<T, reportSummaryCreateArgs<ExtArgs>>): Prisma__reportSummaryClient<$Result.GetResult<Prisma.$reportSummaryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ReportSummaries.
+     * @param {reportSummaryCreateManyArgs} args - Arguments to create many ReportSummaries.
+     * @example
+     * // Create many ReportSummaries
+     * const reportSummary = await prisma.reportSummary.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends reportSummaryCreateManyArgs>(args?: SelectSubset<T, reportSummaryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ReportSummaries and returns the data saved in the database.
+     * @param {reportSummaryCreateManyAndReturnArgs} args - Arguments to create many ReportSummaries.
+     * @example
+     * // Create many ReportSummaries
+     * const reportSummary = await prisma.reportSummary.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ReportSummaries and only return the `id`
+     * const reportSummaryWithIdOnly = await prisma.reportSummary.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends reportSummaryCreateManyAndReturnArgs>(args?: SelectSubset<T, reportSummaryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$reportSummaryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ReportSummary.
+     * @param {reportSummaryDeleteArgs} args - Arguments to delete one ReportSummary.
+     * @example
+     * // Delete one ReportSummary
+     * const ReportSummary = await prisma.reportSummary.delete({
+     *   where: {
+     *     // ... filter to delete one ReportSummary
+     *   }
+     * })
+     * 
+     */
+    delete<T extends reportSummaryDeleteArgs>(args: SelectSubset<T, reportSummaryDeleteArgs<ExtArgs>>): Prisma__reportSummaryClient<$Result.GetResult<Prisma.$reportSummaryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ReportSummary.
+     * @param {reportSummaryUpdateArgs} args - Arguments to update one ReportSummary.
+     * @example
+     * // Update one ReportSummary
+     * const reportSummary = await prisma.reportSummary.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends reportSummaryUpdateArgs>(args: SelectSubset<T, reportSummaryUpdateArgs<ExtArgs>>): Prisma__reportSummaryClient<$Result.GetResult<Prisma.$reportSummaryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ReportSummaries.
+     * @param {reportSummaryDeleteManyArgs} args - Arguments to filter ReportSummaries to delete.
+     * @example
+     * // Delete a few ReportSummaries
+     * const { count } = await prisma.reportSummary.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends reportSummaryDeleteManyArgs>(args?: SelectSubset<T, reportSummaryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReportSummaries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {reportSummaryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ReportSummaries
+     * const reportSummary = await prisma.reportSummary.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends reportSummaryUpdateManyArgs>(args: SelectSubset<T, reportSummaryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReportSummaries and returns the data updated in the database.
+     * @param {reportSummaryUpdateManyAndReturnArgs} args - Arguments to update many ReportSummaries.
+     * @example
+     * // Update many ReportSummaries
+     * const reportSummary = await prisma.reportSummary.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ReportSummaries and only return the `id`
+     * const reportSummaryWithIdOnly = await prisma.reportSummary.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends reportSummaryUpdateManyAndReturnArgs>(args: SelectSubset<T, reportSummaryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$reportSummaryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ReportSummary.
+     * @param {reportSummaryUpsertArgs} args - Arguments to update or create a ReportSummary.
+     * @example
+     * // Update or create a ReportSummary
+     * const reportSummary = await prisma.reportSummary.upsert({
+     *   create: {
+     *     // ... data to create a ReportSummary
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ReportSummary we want to update
+     *   }
+     * })
+     */
+    upsert<T extends reportSummaryUpsertArgs>(args: SelectSubset<T, reportSummaryUpsertArgs<ExtArgs>>): Prisma__reportSummaryClient<$Result.GetResult<Prisma.$reportSummaryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ReportSummaries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {reportSummaryCountArgs} args - Arguments to filter ReportSummaries to count.
+     * @example
+     * // Count the number of ReportSummaries
+     * const count = await prisma.reportSummary.count({
+     *   where: {
+     *     // ... the filter for the ReportSummaries we want to count
+     *   }
+     * })
+    **/
+    count<T extends reportSummaryCountArgs>(
+      args?: Subset<T, reportSummaryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ReportSummaryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ReportSummary.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportSummaryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ReportSummaryAggregateArgs>(args: Subset<T, ReportSummaryAggregateArgs>): Prisma.PrismaPromise<GetReportSummaryAggregateType<T>>
+
+    /**
+     * Group by ReportSummary.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {reportSummaryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends reportSummaryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: reportSummaryGroupByArgs['orderBy'] }
+        : { orderBy?: reportSummaryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, reportSummaryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReportSummaryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the reportSummary model
+   */
+  readonly fields: reportSummaryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for reportSummary.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__reportSummaryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the reportSummary model
+   */
+  interface reportSummaryFieldRefs {
+    readonly id: FieldRef<"reportSummary", 'Int'>
+    readonly date: FieldRef<"reportSummary", 'DateTime'>
+    readonly periodType: FieldRef<"reportSummary", 'String'>
+    readonly totalIncome: FieldRef<"reportSummary", 'Int'>
+    readonly totalExpense: FieldRef<"reportSummary", 'Int'>
+    readonly netProfit: FieldRef<"reportSummary", 'Int'>
+    readonly totalOrders: FieldRef<"reportSummary", 'Int'>
+    readonly topProductsData: FieldRef<"reportSummary", 'Json'>
+    readonly createdAt: FieldRef<"reportSummary", 'DateTime'>
+    readonly updatedAt: FieldRef<"reportSummary", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * reportSummary findUnique
+   */
+  export type reportSummaryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reportSummary
+     */
+    select?: reportSummarySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reportSummary
+     */
+    omit?: reportSummaryOmit<ExtArgs> | null
+    /**
+     * Filter, which reportSummary to fetch.
+     */
+    where: reportSummaryWhereUniqueInput
+  }
+
+  /**
+   * reportSummary findUniqueOrThrow
+   */
+  export type reportSummaryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reportSummary
+     */
+    select?: reportSummarySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reportSummary
+     */
+    omit?: reportSummaryOmit<ExtArgs> | null
+    /**
+     * Filter, which reportSummary to fetch.
+     */
+    where: reportSummaryWhereUniqueInput
+  }
+
+  /**
+   * reportSummary findFirst
+   */
+  export type reportSummaryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reportSummary
+     */
+    select?: reportSummarySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reportSummary
+     */
+    omit?: reportSummaryOmit<ExtArgs> | null
+    /**
+     * Filter, which reportSummary to fetch.
+     */
+    where?: reportSummaryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of reportSummaries to fetch.
+     */
+    orderBy?: reportSummaryOrderByWithRelationInput | reportSummaryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for reportSummaries.
+     */
+    cursor?: reportSummaryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` reportSummaries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` reportSummaries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of reportSummaries.
+     */
+    distinct?: ReportSummaryScalarFieldEnum | ReportSummaryScalarFieldEnum[]
+  }
+
+  /**
+   * reportSummary findFirstOrThrow
+   */
+  export type reportSummaryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reportSummary
+     */
+    select?: reportSummarySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reportSummary
+     */
+    omit?: reportSummaryOmit<ExtArgs> | null
+    /**
+     * Filter, which reportSummary to fetch.
+     */
+    where?: reportSummaryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of reportSummaries to fetch.
+     */
+    orderBy?: reportSummaryOrderByWithRelationInput | reportSummaryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for reportSummaries.
+     */
+    cursor?: reportSummaryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` reportSummaries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` reportSummaries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of reportSummaries.
+     */
+    distinct?: ReportSummaryScalarFieldEnum | ReportSummaryScalarFieldEnum[]
+  }
+
+  /**
+   * reportSummary findMany
+   */
+  export type reportSummaryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reportSummary
+     */
+    select?: reportSummarySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reportSummary
+     */
+    omit?: reportSummaryOmit<ExtArgs> | null
+    /**
+     * Filter, which reportSummaries to fetch.
+     */
+    where?: reportSummaryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of reportSummaries to fetch.
+     */
+    orderBy?: reportSummaryOrderByWithRelationInput | reportSummaryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing reportSummaries.
+     */
+    cursor?: reportSummaryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` reportSummaries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` reportSummaries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of reportSummaries.
+     */
+    distinct?: ReportSummaryScalarFieldEnum | ReportSummaryScalarFieldEnum[]
+  }
+
+  /**
+   * reportSummary create
+   */
+  export type reportSummaryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reportSummary
+     */
+    select?: reportSummarySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reportSummary
+     */
+    omit?: reportSummaryOmit<ExtArgs> | null
+    /**
+     * The data needed to create a reportSummary.
+     */
+    data: XOR<reportSummaryCreateInput, reportSummaryUncheckedCreateInput>
+  }
+
+  /**
+   * reportSummary createMany
+   */
+  export type reportSummaryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many reportSummaries.
+     */
+    data: reportSummaryCreateManyInput | reportSummaryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * reportSummary createManyAndReturn
+   */
+  export type reportSummaryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reportSummary
+     */
+    select?: reportSummarySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the reportSummary
+     */
+    omit?: reportSummaryOmit<ExtArgs> | null
+    /**
+     * The data used to create many reportSummaries.
+     */
+    data: reportSummaryCreateManyInput | reportSummaryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * reportSummary update
+   */
+  export type reportSummaryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reportSummary
+     */
+    select?: reportSummarySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reportSummary
+     */
+    omit?: reportSummaryOmit<ExtArgs> | null
+    /**
+     * The data needed to update a reportSummary.
+     */
+    data: XOR<reportSummaryUpdateInput, reportSummaryUncheckedUpdateInput>
+    /**
+     * Choose, which reportSummary to update.
+     */
+    where: reportSummaryWhereUniqueInput
+  }
+
+  /**
+   * reportSummary updateMany
+   */
+  export type reportSummaryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update reportSummaries.
+     */
+    data: XOR<reportSummaryUpdateManyMutationInput, reportSummaryUncheckedUpdateManyInput>
+    /**
+     * Filter which reportSummaries to update
+     */
+    where?: reportSummaryWhereInput
+    /**
+     * Limit how many reportSummaries to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * reportSummary updateManyAndReturn
+   */
+  export type reportSummaryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reportSummary
+     */
+    select?: reportSummarySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the reportSummary
+     */
+    omit?: reportSummaryOmit<ExtArgs> | null
+    /**
+     * The data used to update reportSummaries.
+     */
+    data: XOR<reportSummaryUpdateManyMutationInput, reportSummaryUncheckedUpdateManyInput>
+    /**
+     * Filter which reportSummaries to update
+     */
+    where?: reportSummaryWhereInput
+    /**
+     * Limit how many reportSummaries to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * reportSummary upsert
+   */
+  export type reportSummaryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reportSummary
+     */
+    select?: reportSummarySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reportSummary
+     */
+    omit?: reportSummaryOmit<ExtArgs> | null
+    /**
+     * The filter to search for the reportSummary to update in case it exists.
+     */
+    where: reportSummaryWhereUniqueInput
+    /**
+     * In case the reportSummary found by the `where` argument doesn't exist, create a new reportSummary with this data.
+     */
+    create: XOR<reportSummaryCreateInput, reportSummaryUncheckedCreateInput>
+    /**
+     * In case the reportSummary was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<reportSummaryUpdateInput, reportSummaryUncheckedUpdateInput>
+  }
+
+  /**
+   * reportSummary delete
+   */
+  export type reportSummaryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reportSummary
+     */
+    select?: reportSummarySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reportSummary
+     */
+    omit?: reportSummaryOmit<ExtArgs> | null
+    /**
+     * Filter which reportSummary to delete.
+     */
+    where: reportSummaryWhereUniqueInput
+  }
+
+  /**
+   * reportSummary deleteMany
+   */
+  export type reportSummaryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which reportSummaries to delete
+     */
+    where?: reportSummaryWhereInput
+    /**
+     * Limit how many reportSummaries to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * reportSummary without action
+   */
+  export type reportSummaryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reportSummary
+     */
+    select?: reportSummarySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reportSummary
+     */
+    omit?: reportSummaryOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -9712,6 +10927,7 @@ export namespace Prisma {
 
   export const OrderScalarFieldEnum: {
     id: 'id',
+    orderCode: 'orderCode',
     totalAmount: 'totalAmount',
     paymentMethod: 'paymentMethod',
     paymentStatus: 'paymentStatus',
@@ -9747,12 +10963,36 @@ export namespace Prisma {
   export type ExpenditureScalarFieldEnum = (typeof ExpenditureScalarFieldEnum)[keyof typeof ExpenditureScalarFieldEnum]
 
 
+  export const ReportSummaryScalarFieldEnum: {
+    id: 'id',
+    date: 'date',
+    periodType: 'periodType',
+    totalIncome: 'totalIncome',
+    totalExpense: 'totalExpense',
+    netProfit: 'netProfit',
+    totalOrders: 'totalOrders',
+    topProductsData: 'topProductsData',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ReportSummaryScalarFieldEnum = (typeof ReportSummaryScalarFieldEnum)[keyof typeof ReportSummaryScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const QueryMode: {
@@ -9769,6 +11009,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -9871,6 +11120,20 @@ export namespace Prisma {
    * Reference to a field of type 'OrderStatus[]'
    */
   export type ListEnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -10173,6 +11436,7 @@ export namespace Prisma {
     OR?: orderWhereInput[]
     NOT?: orderWhereInput | orderWhereInput[]
     id?: IntFilter<"order"> | number
+    orderCode?: StringFilter<"order"> | string
     totalAmount?: IntFilter<"order"> | number
     paymentMethod?: EnumPaymentMethodFilter<"order"> | $Enums.PaymentMethod
     paymentStatus?: EnumOrderStatusFilter<"order"> | $Enums.OrderStatus
@@ -10185,6 +11449,7 @@ export namespace Prisma {
 
   export type orderOrderByWithRelationInput = {
     id?: SortOrder
+    orderCode?: SortOrder
     totalAmount?: SortOrder
     paymentMethod?: SortOrder
     paymentStatus?: SortOrder
@@ -10197,6 +11462,7 @@ export namespace Prisma {
 
   export type orderWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    orderCode?: string
     AND?: orderWhereInput | orderWhereInput[]
     OR?: orderWhereInput[]
     NOT?: orderWhereInput | orderWhereInput[]
@@ -10208,10 +11474,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"order"> | Date | string
     user?: XOR<UserScalarRelationFilter, userWhereInput>
     items?: OrderItemListRelationFilter
-  }, "id">
+  }, "id" | "orderCode">
 
   export type orderOrderByWithAggregationInput = {
     id?: SortOrder
+    orderCode?: SortOrder
     totalAmount?: SortOrder
     paymentMethod?: SortOrder
     paymentStatus?: SortOrder
@@ -10230,6 +11497,7 @@ export namespace Prisma {
     OR?: orderScalarWhereWithAggregatesInput[]
     NOT?: orderScalarWhereWithAggregatesInput | orderScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"order"> | number
+    orderCode?: StringWithAggregatesFilter<"order"> | string
     totalAmount?: IntWithAggregatesFilter<"order"> | number
     paymentMethod?: EnumPaymentMethodWithAggregatesFilter<"order"> | $Enums.PaymentMethod
     paymentStatus?: EnumOrderStatusWithAggregatesFilter<"order"> | $Enums.OrderStatus
@@ -10363,6 +11631,86 @@ export namespace Prisma {
     userId?: IntWithAggregatesFilter<"expenditure"> | number
     createdAt?: DateTimeWithAggregatesFilter<"expenditure"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"expenditure"> | Date | string
+  }
+
+  export type reportSummaryWhereInput = {
+    AND?: reportSummaryWhereInput | reportSummaryWhereInput[]
+    OR?: reportSummaryWhereInput[]
+    NOT?: reportSummaryWhereInput | reportSummaryWhereInput[]
+    id?: IntFilter<"reportSummary"> | number
+    date?: DateTimeFilter<"reportSummary"> | Date | string
+    periodType?: StringFilter<"reportSummary"> | string
+    totalIncome?: IntFilter<"reportSummary"> | number
+    totalExpense?: IntFilter<"reportSummary"> | number
+    netProfit?: IntFilter<"reportSummary"> | number
+    totalOrders?: IntFilter<"reportSummary"> | number
+    topProductsData?: JsonNullableFilter<"reportSummary">
+    createdAt?: DateTimeFilter<"reportSummary"> | Date | string
+    updatedAt?: DateTimeFilter<"reportSummary"> | Date | string
+  }
+
+  export type reportSummaryOrderByWithRelationInput = {
+    id?: SortOrder
+    date?: SortOrder
+    periodType?: SortOrder
+    totalIncome?: SortOrder
+    totalExpense?: SortOrder
+    netProfit?: SortOrder
+    totalOrders?: SortOrder
+    topProductsData?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type reportSummaryWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    date_periodType?: reportSummaryDatePeriodTypeCompoundUniqueInput
+    AND?: reportSummaryWhereInput | reportSummaryWhereInput[]
+    OR?: reportSummaryWhereInput[]
+    NOT?: reportSummaryWhereInput | reportSummaryWhereInput[]
+    date?: DateTimeFilter<"reportSummary"> | Date | string
+    periodType?: StringFilter<"reportSummary"> | string
+    totalIncome?: IntFilter<"reportSummary"> | number
+    totalExpense?: IntFilter<"reportSummary"> | number
+    netProfit?: IntFilter<"reportSummary"> | number
+    totalOrders?: IntFilter<"reportSummary"> | number
+    topProductsData?: JsonNullableFilter<"reportSummary">
+    createdAt?: DateTimeFilter<"reportSummary"> | Date | string
+    updatedAt?: DateTimeFilter<"reportSummary"> | Date | string
+  }, "id" | "date_periodType">
+
+  export type reportSummaryOrderByWithAggregationInput = {
+    id?: SortOrder
+    date?: SortOrder
+    periodType?: SortOrder
+    totalIncome?: SortOrder
+    totalExpense?: SortOrder
+    netProfit?: SortOrder
+    totalOrders?: SortOrder
+    topProductsData?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: reportSummaryCountOrderByAggregateInput
+    _avg?: reportSummaryAvgOrderByAggregateInput
+    _max?: reportSummaryMaxOrderByAggregateInput
+    _min?: reportSummaryMinOrderByAggregateInput
+    _sum?: reportSummarySumOrderByAggregateInput
+  }
+
+  export type reportSummaryScalarWhereWithAggregatesInput = {
+    AND?: reportSummaryScalarWhereWithAggregatesInput | reportSummaryScalarWhereWithAggregatesInput[]
+    OR?: reportSummaryScalarWhereWithAggregatesInput[]
+    NOT?: reportSummaryScalarWhereWithAggregatesInput | reportSummaryScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"reportSummary"> | number
+    date?: DateTimeWithAggregatesFilter<"reportSummary"> | Date | string
+    periodType?: StringWithAggregatesFilter<"reportSummary"> | string
+    totalIncome?: IntWithAggregatesFilter<"reportSummary"> | number
+    totalExpense?: IntWithAggregatesFilter<"reportSummary"> | number
+    netProfit?: IntWithAggregatesFilter<"reportSummary"> | number
+    totalOrders?: IntWithAggregatesFilter<"reportSummary"> | number
+    topProductsData?: JsonNullableWithAggregatesFilter<"reportSummary">
+    createdAt?: DateTimeWithAggregatesFilter<"reportSummary"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"reportSummary"> | Date | string
   }
 
   export type userCreateInput = {
@@ -10652,6 +12000,7 @@ export namespace Prisma {
   }
 
   export type orderCreateInput = {
+    orderCode?: string
     totalAmount?: number
     paymentMethod?: $Enums.PaymentMethod
     paymentStatus?: $Enums.OrderStatus
@@ -10663,6 +12012,7 @@ export namespace Prisma {
 
   export type orderUncheckedCreateInput = {
     id?: number
+    orderCode?: string
     totalAmount?: number
     paymentMethod?: $Enums.PaymentMethod
     paymentStatus?: $Enums.OrderStatus
@@ -10673,6 +12023,7 @@ export namespace Prisma {
   }
 
   export type orderUpdateInput = {
+    orderCode?: StringFieldUpdateOperationsInput | string
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     paymentStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
@@ -10684,6 +12035,7 @@ export namespace Prisma {
 
   export type orderUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
+    orderCode?: StringFieldUpdateOperationsInput | string
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     paymentStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
@@ -10695,6 +12047,7 @@ export namespace Prisma {
 
   export type orderCreateManyInput = {
     id?: number
+    orderCode?: string
     totalAmount?: number
     paymentMethod?: $Enums.PaymentMethod
     paymentStatus?: $Enums.OrderStatus
@@ -10704,6 +12057,7 @@ export namespace Prisma {
   }
 
   export type orderUpdateManyMutationInput = {
+    orderCode?: StringFieldUpdateOperationsInput | string
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     paymentStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
@@ -10713,6 +12067,7 @@ export namespace Prisma {
 
   export type orderUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
+    orderCode?: StringFieldUpdateOperationsInput | string
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     paymentStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
@@ -10834,6 +12189,94 @@ export namespace Prisma {
     price?: NullableIntFieldUpdateOperationsInput | number | null
     note?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type reportSummaryCreateInput = {
+    date: Date | string
+    periodType: string
+    totalIncome?: number
+    totalExpense?: number
+    netProfit?: number
+    totalOrders?: number
+    topProductsData?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type reportSummaryUncheckedCreateInput = {
+    id?: number
+    date: Date | string
+    periodType: string
+    totalIncome?: number
+    totalExpense?: number
+    netProfit?: number
+    totalOrders?: number
+    topProductsData?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type reportSummaryUpdateInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodType?: StringFieldUpdateOperationsInput | string
+    totalIncome?: IntFieldUpdateOperationsInput | number
+    totalExpense?: IntFieldUpdateOperationsInput | number
+    netProfit?: IntFieldUpdateOperationsInput | number
+    totalOrders?: IntFieldUpdateOperationsInput | number
+    topProductsData?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type reportSummaryUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodType?: StringFieldUpdateOperationsInput | string
+    totalIncome?: IntFieldUpdateOperationsInput | number
+    totalExpense?: IntFieldUpdateOperationsInput | number
+    netProfit?: IntFieldUpdateOperationsInput | number
+    totalOrders?: IntFieldUpdateOperationsInput | number
+    topProductsData?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type reportSummaryCreateManyInput = {
+    id?: number
+    date: Date | string
+    periodType: string
+    totalIncome?: number
+    totalExpense?: number
+    netProfit?: number
+    totalOrders?: number
+    topProductsData?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type reportSummaryUpdateManyMutationInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodType?: StringFieldUpdateOperationsInput | string
+    totalIncome?: IntFieldUpdateOperationsInput | number
+    totalExpense?: IntFieldUpdateOperationsInput | number
+    netProfit?: IntFieldUpdateOperationsInput | number
+    totalOrders?: IntFieldUpdateOperationsInput | number
+    topProductsData?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type reportSummaryUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodType?: StringFieldUpdateOperationsInput | string
+    totalIncome?: IntFieldUpdateOperationsInput | number
+    totalExpense?: IntFieldUpdateOperationsInput | number
+    netProfit?: IntFieldUpdateOperationsInput | number
+    totalOrders?: IntFieldUpdateOperationsInput | number
+    topProductsData?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -11265,6 +12708,7 @@ export namespace Prisma {
 
   export type orderCountOrderByAggregateInput = {
     id?: SortOrder
+    orderCode?: SortOrder
     totalAmount?: SortOrder
     paymentMethod?: SortOrder
     paymentStatus?: SortOrder
@@ -11281,6 +12725,7 @@ export namespace Prisma {
 
   export type orderMaxOrderByAggregateInput = {
     id?: SortOrder
+    orderCode?: SortOrder
     totalAmount?: SortOrder
     paymentMethod?: SortOrder
     paymentStatus?: SortOrder
@@ -11291,6 +12736,7 @@ export namespace Prisma {
 
   export type orderMinOrderByAggregateInput = {
     id?: SortOrder
+    orderCode?: SortOrder
     totalAmount?: SortOrder
     paymentMethod?: SortOrder
     paymentStatus?: SortOrder
@@ -11410,6 +12856,113 @@ export namespace Prisma {
     id?: SortOrder
     price?: SortOrder
     userId?: SortOrder
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type reportSummaryDatePeriodTypeCompoundUniqueInput = {
+    date: Date | string
+    periodType: string
+  }
+
+  export type reportSummaryCountOrderByAggregateInput = {
+    id?: SortOrder
+    date?: SortOrder
+    periodType?: SortOrder
+    totalIncome?: SortOrder
+    totalExpense?: SortOrder
+    netProfit?: SortOrder
+    totalOrders?: SortOrder
+    topProductsData?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type reportSummaryAvgOrderByAggregateInput = {
+    id?: SortOrder
+    totalIncome?: SortOrder
+    totalExpense?: SortOrder
+    netProfit?: SortOrder
+    totalOrders?: SortOrder
+  }
+
+  export type reportSummaryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    date?: SortOrder
+    periodType?: SortOrder
+    totalIncome?: SortOrder
+    totalExpense?: SortOrder
+    netProfit?: SortOrder
+    totalOrders?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type reportSummaryMinOrderByAggregateInput = {
+    id?: SortOrder
+    date?: SortOrder
+    periodType?: SortOrder
+    totalIncome?: SortOrder
+    totalExpense?: SortOrder
+    netProfit?: SortOrder
+    totalOrders?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type reportSummarySumOrderByAggregateInput = {
+    id?: SortOrder
+    totalIncome?: SortOrder
+    totalExpense?: SortOrder
+    netProfit?: SortOrder
+    totalOrders?: SortOrder
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type orderCreateNestedManyWithoutUserInput = {
@@ -12022,8 +13575,32 @@ export namespace Prisma {
     _min?: NestedEnumOrderStatusFilter<$PrismaModel>
     _max?: NestedEnumOrderStatusFilter<$PrismaModel>
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type orderCreateWithoutUserInput = {
+    orderCode?: string
     totalAmount?: number
     paymentMethod?: $Enums.PaymentMethod
     paymentStatus?: $Enums.OrderStatus
@@ -12034,6 +13611,7 @@ export namespace Prisma {
 
   export type orderUncheckedCreateWithoutUserInput = {
     id?: number
+    orderCode?: string
     totalAmount?: number
     paymentMethod?: $Enums.PaymentMethod
     paymentStatus?: $Enums.OrderStatus
@@ -12100,6 +13678,7 @@ export namespace Prisma {
     OR?: orderScalarWhereInput[]
     NOT?: orderScalarWhereInput | orderScalarWhereInput[]
     id?: IntFilter<"order"> | number
+    orderCode?: StringFilter<"order"> | string
     totalAmount?: IntFilter<"order"> | number
     paymentMethod?: EnumPaymentMethodFilter<"order"> | $Enums.PaymentMethod
     paymentStatus?: EnumOrderStatusFilter<"order"> | $Enums.OrderStatus
@@ -12519,6 +14098,7 @@ export namespace Prisma {
   }
 
   export type orderCreateWithoutItemsInput = {
+    orderCode?: string
     totalAmount?: number
     paymentMethod?: $Enums.PaymentMethod
     paymentStatus?: $Enums.OrderStatus
@@ -12529,6 +14109,7 @@ export namespace Prisma {
 
   export type orderUncheckedCreateWithoutItemsInput = {
     id?: number
+    orderCode?: string
     totalAmount?: number
     paymentMethod?: $Enums.PaymentMethod
     paymentStatus?: $Enums.OrderStatus
@@ -12584,6 +14165,7 @@ export namespace Prisma {
   }
 
   export type orderUpdateWithoutItemsInput = {
+    orderCode?: StringFieldUpdateOperationsInput | string
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     paymentStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
@@ -12594,6 +14176,7 @@ export namespace Prisma {
 
   export type orderUncheckedUpdateWithoutItemsInput = {
     id?: IntFieldUpdateOperationsInput | number
+    orderCode?: StringFieldUpdateOperationsInput | string
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     paymentStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
@@ -12698,6 +14281,7 @@ export namespace Prisma {
 
   export type orderCreateManyUserInput = {
     id?: number
+    orderCode?: string
     totalAmount?: number
     paymentMethod?: $Enums.PaymentMethod
     paymentStatus?: $Enums.OrderStatus
@@ -12715,6 +14299,7 @@ export namespace Prisma {
   }
 
   export type orderUpdateWithoutUserInput = {
+    orderCode?: StringFieldUpdateOperationsInput | string
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     paymentStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
@@ -12725,6 +14310,7 @@ export namespace Prisma {
 
   export type orderUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
+    orderCode?: StringFieldUpdateOperationsInput | string
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     paymentStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
@@ -12735,6 +14321,7 @@ export namespace Prisma {
 
   export type orderUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
+    orderCode?: StringFieldUpdateOperationsInput | string
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     paymentStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
