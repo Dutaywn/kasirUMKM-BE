@@ -22,8 +22,20 @@ export const getAllOrders = async (req: Request, res: Response) => {
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
         const search = req.query.search as string;
+        const paymentStatus = req.query.paymentStatus as string;
+        const paymentMethod = req.query.paymentMethod as string;
+        const startDate = req.query.startDate as string;
+        const endDate = req.query.endDate as string;
 
-        const { orders, total } = await orderService.getAllOrders(page, limit, search);
+        const { orders, total } = await orderService.getAllOrders(
+            page, 
+            limit, 
+            search, 
+            paymentStatus, 
+            paymentMethod, 
+            startDate, 
+            endDate
+        );
         
         const totalPages = Math.ceil(total / limit);
 

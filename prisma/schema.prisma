@@ -82,6 +82,7 @@ model stock {
 
 model order {
   id             Int           @id @default(autoincrement())
+  orderCode      String        @unique @default(uuid())
   totalAmount    Int           @default(0) 
   paymentMethod  PaymentMethod @default(CASH)
   paymentStatus  OrderStatus   @default(PENDING)

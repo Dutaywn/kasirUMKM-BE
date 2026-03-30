@@ -58,13 +58,20 @@ export const createOrder = async (data: CreateOrderDTO) => {
                     }
                 });
             }
-            const statusPayment = paymentMethod === "CASH" ? "PAID" : "PENDING";
+            const generateOrderCode = () => {
+                const timestamp = Date.now();
+                const random = Math.floor(Math.random() * 1000);
+                return `ORD-${timestamp}-${random}`;
+            };
+            const statusPayment = paymentMethod === "CASH" || "QRIS" ? "PAID" : "PENDING";
+            const orderCode = generateOrderCode();
 
             // 5. Create the order
             const order = await tx.order.create({
                 data: {
                     userId,
                     totalAmount,
+                    orderCode,
                     paymentMethod,
                     paymentStatus: statusPayment,
                     items: {
@@ -88,65 +95,88 @@ export const createOrder = async (data: CreateOrderDTO) => {
     }
 };
 
-export const getAllOrders = async (page: number = 1, limit: number = 10, search?: string) => {
+export const getAllOrders = async (
+    page: number = 1,
+    limit: number = 10,
+    search?: string,
+    paymentStatus?: string,
+    paymentMethod?: string,
+    startDate?: string,
+    endDate?: string
+) => {
     try {
         const skip = (page - 1) * limit;
         const take = limit;
 
         const where: any = {};
+
+        // 🔹 FILTER (lebih presisi)
+        if (paymentStatus) {
+            where.paymentStatus = paymentStatus;
+        }
+
+        if (paymentMethod) {
+            where.paymentMethod = paymentMethod;
+        }
+
+        // 🔹 DATE RANGE FILTER
+        if (startDate && endDate) {
+            const start = new Date(`${startDate}T00:00:00.000Z`);
+            const end = new Date(`${endDate}T23:59:59.999Z`);
+
+            where.createdAt = {
+                gte: start,
+                lte: end
+            };
+        } else if (startDate) {
+            const start = new Date(`${startDate}T00:00:00.000Z`);
+            where.createdAt = {
+                gte: start
+            };
+        } else if (endDate) {
+            const end = new Date(`${endDate}T23:59:59.999Z`);
+            where.createdAt = {
+                lte: end
+            };
+        }
+
+        // 🔹 SEARCH (flexible)
         if (search) {
             const cleanSearch = search.replace(/"/g, "").trim();
-            const upperSearch = cleanSearch.toUpperCase();
 
-            const orConditions: any[] = [];
+            where.OR = [
+                // ✅ order code
+                {
+                    orderCode: {
+                        contains: cleanSearch,
+                        mode: "insensitive"
+                    }
+                },
 
-            // 🔹 simple search (fast)
-            orConditions.push({
-                user: { userName: { contains: cleanSearch, mode: "insensitive" } }
-            });
+                // ✅ user
+                {
+                    user: {
+                        userName: {
+                            contains: cleanSearch,
+                            mode: "insensitive"
+                        }
+                    }
+                },
 
-            // 🔹 heavy search (optional)
-            if (cleanSearch.length >= 3) {
-                orConditions.push({
+                // ✅ product (heavy)
+                ...(cleanSearch.length >= 3 ? [{
                     items: {
                         some: {
                             product: {
-                                name: { contains: cleanSearch, mode: "insensitive" }
+                                name: {
+                                    contains: cleanSearch,
+                                    mode: "insensitive"
+                                }
                             }
                         }
                     }
-                });
-            }
-
-            // 🔹 enum
-            const enumMap = {
-                paymentMethod: ["CASH", "QRIS", "TRANSFER"],
-                paymentStatus: ["PENDING", "PAID", "CANCELLED"]
-            };
-
-            Object.entries(enumMap).forEach(([field, values]) => {
-                if (values.includes(upperSearch)) {
-                    orConditions.push({ [field]: upperSearch });
-                }
-            });
-
-            // 🔹 date
-            const dateRegex = /^\d{4}-\d{1,2}-\d{1,2}$/;
-            if (dateRegex.test(cleanSearch)) {
-                const startDate = new Date(`${cleanSearch}T00:00:00.000Z`);
-                const endDate = new Date(`${cleanSearch}T23:59:59.999Z`);
-
-                if (!isNaN(startDate.getTime())) {
-                    orConditions.push({
-                        createdAt: {
-                            gte: startDate,
-                            lte: endDate
-                        }
-                    });
-                }
-            }
-
-            where.OR = orConditions;
+                }] : [])
+            ];
         }
 
         const [orders, total] = await Promise.all([
