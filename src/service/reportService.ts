@@ -7,11 +7,13 @@ export const generateReport = async (
 ) => {
     const startOfDay = new Date(start);
     const endOfDay = new Date(end);
+    
 
     // 1. Aggregates (Income)
     const incomeAgg = await prisma.order.aggregate({
         _sum: { totalAmount: true },
         where: {
+            
             paymentStatus: "PAID",
             createdAt: { gte: startOfDay, lte: endOfDay },
         },

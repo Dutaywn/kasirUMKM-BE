@@ -5,10 +5,44 @@ export const generateReport = async (req: Request, res: Response) => {
     try {
         const { startDate, endDate, periodType } = req.body;
 
-        // Default to today for DAILY if not provided
-        const start = startDate ? new Date(startDate) : new Date(new Date().setHours(0, 0, 0, 0));
-        const end = endDate ? new Date(endDate) : new Date(new Date().setHours(23, 59, 59, 999));
-        const period = (periodType as any) || "DAILY";
+        const period = (periodType || "DAILY") as "DAILY" | "WEEKLY" | "MONTHLY";
+
+        let start: Date;
+        let end: Date;
+
+        const baseDate = startDate ? new Date(startDate) : new Date();
+
+        if (isNaN(baseDate.getTime())) {
+            return res.status(400).json({ message: "Invalid startDate" });
+        }
+
+        // 🔥 NORMALIZATION (INI YANG PENTING)
+        if (period === "DAILY") {
+            start = new Date(baseDate);
+            start.setHours(0, 0, 0, 0);
+
+            end = new Date(start);
+            end.setDate(start.getDate() + 1); // 🔥 next day
+        }
+
+        else if (period === "WEEKLY") {
+            const day = baseDate.getDay();
+            const diffToMonday = (day === 0 ? -6 : 1 - day);
+
+            start = new Date(baseDate);
+            start.setDate(baseDate.getDate() + diffToMonday);
+            start.setHours(0, 0, 0, 0);
+
+            end = new Date(start);
+            end.setDate(start.getDate() + 7); // 🔥 next week
+        }
+
+        else { // MONTHLY
+            start = new Date(baseDate.getFullYear(), baseDate.getMonth(), 1);
+            start.setHours(0, 0, 0, 0);
+
+            end = new Date(baseDate.getFullYear(), baseDate.getMonth() + 1, 1); // 🔥 next month
+        }
 
         const savedReport = await reportService.generateReport(start, end, period);
 
@@ -16,10 +50,11 @@ export const generateReport = async (req: Request, res: Response) => {
             message: `Laporan ${period.toLowerCase()} berhasil di-generate dan disimpan.`,
             data: savedReport,
         });
+
     } catch (error: any) {
         console.error("Error generating report:", error);
-        res.status(500).json({ 
-            message: error.message || "Gagal men-generate laporan." 
+        res.status(500).json({
+            message: error.message || "Gagal men-generate laporan."
         });
     }
 };
