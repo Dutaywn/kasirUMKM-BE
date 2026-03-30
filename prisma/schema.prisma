@@ -33,9 +33,12 @@ enum StockType {
 model user {
   id           Int           @id @default(autoincrement())
   userName     String?
-  password     String?
   email        String?       @unique
+  password     String?       // password untuk credentials login
   role         Role          @default(USER)
+  provider     String?       // "google" | "credentials"
+  providerId   String?       // id unik dari Google
+  image        String?       // foto profile Google
   orders       order[]
   expenditures expenditure[]
   createdAt    DateTime      @default(now())

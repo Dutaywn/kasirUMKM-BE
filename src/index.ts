@@ -9,6 +9,8 @@ import reportRoutes from "./route/reportRoutes.js";
 import expenditureRoutes from "./route/expenditureRoutes.js";
 import cors from "cors";
 
+import passport from "./middleware/passport.js";
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -18,6 +20,7 @@ const allowedOrigins = [
 ].filter(Boolean) as string[];
 
 app.use(express.json());
+app.use(passport.initialize());
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps, curl, or same-origin)
