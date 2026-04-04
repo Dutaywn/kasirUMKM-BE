@@ -3,7 +3,8 @@ import { prisma } from "../../lib/prisma.js";
 export const generateReport = async (
     start: Date,
     end: Date,
-    periodType: "DAILY" | "WEEKLY" | "MONTHLY"
+    periodType: "DAILY" | "WEEKLY" | "MONTHLY",
+    userId: number
 ) => {
     const startOfDay = new Date(start);
     const endOfDay = new Date(end);
@@ -13,7 +14,7 @@ export const generateReport = async (
     const incomeAgg = await prisma.order.aggregate({
         _sum: { totalAmount: true },
         where: {
-            
+            userId,
             paymentStatus: "PAID",
             createdAt: { gte: startOfDay, lte: endOfDay },
         },
@@ -22,6 +23,7 @@ export const generateReport = async (
     // 2. Aggregates (Orders Count)
     const ordersCount = await prisma.order.count({
         where: {
+            userId,
             createdAt: { gte: startOfDay, lte: endOfDay },
         },
     });
@@ -30,6 +32,7 @@ export const generateReport = async (
     const expenseAgg = await prisma.expenditure.aggregate({
         _sum: { price: true },
         where: {
+            userId,
             createdAt: { gte: startOfDay, lte: endOfDay },
         },
     });
@@ -45,6 +48,7 @@ export const generateReport = async (
         _sum: { quantity: true },
         where: {
             order: {
+                userId,
                 createdAt: { gte: startOfDay, lte: endOfDay },
                 paymentStatus: "PAID",
             },
@@ -76,7 +80,7 @@ export const generateReport = async (
     // 5. Upsert the Summary Report
     const savedReport = await prisma.reportSummary.upsert({
         where: {
-            date_periodType: { date: startOfDay, periodType: periodType },
+            userId_date_periodType: { userId, date: startOfDay, periodType: periodType },
         },
         update: {
             totalIncome,
@@ -86,6 +90,7 @@ export const generateReport = async (
             topProductsData,
         },
         create: {
+            userId,
             date: startOfDay,
             periodType: periodType,
             totalIncome,
@@ -100,6 +105,7 @@ export const generateReport = async (
 };
 
 export const getReports = async (
+    userId: number,
     page: number = 1,
     limit: number = 10,
     period?: string,
@@ -109,7 +115,7 @@ export const getReports = async (
 ) => {
     const skip = (page - 1) * limit;
 
-    const where: any = {};
+    const where: any = { userId };
 
     if (period) {
         where.periodType = period;
@@ -149,8 +155,8 @@ export const getReports = async (
     return { reports, total };
 };
 
-export const deleteReport = async (id: number) => {
-    return await prisma.reportSummary.delete({
-        where: { id },
+export const deleteReport = async (id: number, userId: number) => {
+    return await prisma.reportSummary.deleteMany({
+        where: { id, userId },
     });
 };

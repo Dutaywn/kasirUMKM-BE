@@ -1,9 +1,13 @@
 import { Request, Response } from "express";
 import * as categoryService from "../service/categoriesService.js";
 
-export const getAllCategories = async (req: Request, res: Response) => {
+import { AuthenticatedRequest } from "../middleware/authMiddleware.js";
+
+export const getAllCategories = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const categories = await categoryService.getAllCategories();
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+        const categories = await categoryService.getAllCategories(userId);
         res.status(200).json({
             message: "Categories fetched successfully",
             data: categories,
@@ -13,9 +17,11 @@ export const getAllCategories = async (req: Request, res: Response) => {
     }
 }
 
-export const getCategoryById = async (req: Request, res: Response) => {
+export const getCategoryById = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const category = await categoryService.getCategoryById(Number(req.params.id));
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+        const category = await categoryService.getCategoryById(Number(req.params.id), userId);
         res.status(200).json({
             message: "Category fetched successfully",
             data: category,
@@ -25,9 +31,11 @@ export const getCategoryById = async (req: Request, res: Response) => {
     }
 }
 
-export const createCategory = async (req: Request, res: Response) => {
+export const createCategory = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const category = await categoryService.createCategory(req.body);
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+        const category = await categoryService.createCategory(req.body, userId);
         res.status(201).json({
             message: "Category created successfully",
             data: category,
@@ -37,9 +45,11 @@ export const createCategory = async (req: Request, res: Response) => {
     }
 }
 
-export const updateCategory = async (req: Request, res: Response) => {
+export const updateCategory = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const category = await categoryService.updateCategory(Number(req.params.id), req.body);
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+        const category = await categoryService.updateCategory(Number(req.params.id), req.body, userId);
         res.status(200).json({
             message: "Category updated successfully",
             data: category,
@@ -49,9 +59,11 @@ export const updateCategory = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteCategory = async (req: Request, res: Response) => {
+export const deleteCategory = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const category = await categoryService.deleteCategory(Number(req.params.id));
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+        const category = await categoryService.deleteCategory(Number(req.params.id), userId);
         res.status(200).json({
             message: "Category deleted successfully",
             data: category,

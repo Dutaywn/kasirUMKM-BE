@@ -1,9 +1,13 @@
 import { Request, Response } from "express";
 import * as stockService from "../service/stockService.js";
+import { AuthenticatedRequest } from "../middleware/authMiddleware.js";
 
-export const getAllStocks = async (req: Request, res: Response) => {
+export const getAllStocks = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const stocks = await stockService.getAllStocks();
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+        const stocks = await stockService.getAllStocks(userId);
         res.status(200).json({
             message: "Stocks fetched successfully",
             data: stocks,
@@ -13,9 +17,12 @@ export const getAllStocks = async (req: Request, res: Response) => {
     }
 }
 
-export const getStockById = async (req: Request, res: Response) => {
+export const getStockById = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const stock = await stockService.getStockById(Number(req.params.id));
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+        const stock = await stockService.getStockById(Number(req.params.id), userId);
         res.status(200).json({
             message: "Stock fetched successfully",
             data: stock,
@@ -25,9 +32,12 @@ export const getStockById = async (req: Request, res: Response) => {
     }
 }
 
-export const createStock = async (req: Request, res: Response) => {
+export const createStock = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const stock = await stockService.createStock(req.body);
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+        const stock = await stockService.createStock(req.body, userId);
         res.status(201).json({
             message: "Stock created successfully",
             data: stock,
@@ -37,9 +47,12 @@ export const createStock = async (req: Request, res: Response) => {
     }
 }
 
-export const updateStock = async (req: Request, res: Response) => {
+export const updateStock = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const stock = await stockService.updateStock(Number(req.params.id), req.body);
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+        const stock = await stockService.updateStock(Number(req.params.id), req.body, userId);
         res.status(200).json({
             message: "Stock updated successfully",
             data: stock,
@@ -49,9 +62,12 @@ export const updateStock = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteStock = async (req: Request, res: Response) => {
+export const deleteStock = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const stock = await stockService.deleteStock(Number(req.params.id));
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+        const stock = await stockService.deleteStock(Number(req.params.id), userId);
         res.status(200).json({
             message: "Stock deleted successfully",
             data: stock,

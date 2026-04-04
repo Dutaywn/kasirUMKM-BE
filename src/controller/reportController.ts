@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import * as reportService from "../service/reportService.js";
 
-export const generateReport = async (req: Request, res: Response) => {
+import { AuthenticatedRequest } from "../middleware/authMiddleware.js";
+
+export const generateReport = async (req: AuthenticatedRequest, res: Response) => {
     try {
         const { startDate, endDate, periodType } = req.body;
 
@@ -44,7 +46,10 @@ export const generateReport = async (req: Request, res: Response) => {
             end = new Date(baseDate.getFullYear(), baseDate.getMonth() + 1, 1); // 🔥 next month
         }
 
-        const savedReport = await reportService.generateReport(start, end, period);
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+        const savedReport = await reportService.generateReport(start, end, period, userId);
 
         res.status(200).json({
             message: `Laporan ${period.toLowerCase()} berhasil di-generate dan disimpan.`,
@@ -59,7 +64,7 @@ export const generateReport = async (req: Request, res: Response) => {
     }
 };
 
-export const getReports = async (req: Request, res: Response) => {
+export const getReports = async (req: AuthenticatedRequest, res: Response) => {
     try {
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
@@ -68,7 +73,11 @@ export const getReports = async (req: Request, res: Response) => {
         const startDate = req.query.startDate as string;
         const endDate = req.query.endDate as string;
 
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
         const { reports, total } = await reportService.getReports(
+            userId,
             page,
             limit,
             period,
@@ -98,10 +107,12 @@ export const getReports = async (req: Request, res: Response) => {
     }
 };
 
-export const deleteReport = async (req: Request, res: Response) => {
+export const deleteReport = async (req: AuthenticatedRequest, res: Response) => {
     try {
         const id = parseInt(req.params.id as string);
-        const deletedReport = await reportService.deleteReport(id);
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+        const deletedReport = await reportService.deleteReport(id, userId);
 
         res.status(200).json({
             message: "Laporan berhasil dihapus.",

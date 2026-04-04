@@ -10,6 +10,7 @@ import expenditureRoutes from "./route/expenditureRoutes.js";
 import cors from "cors";
 
 import passport from "./middleware/passport.js";
+import { authMiddleware } from "./middleware/authMiddleware.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -41,12 +42,12 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/categories", categoriesRoutes);
-app.use("/api/stocks", stockRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/reports", reportRoutes);
-app.use("/api/expenditures", expenditureRoutes);
+app.use("/api/products", authMiddleware, productRoutes);
+app.use("/api/categories", authMiddleware, categoriesRoutes);
+app.use("/api/stocks", authMiddleware, stockRoutes);
+app.use("/api/orders", authMiddleware, orderRoutes);
+app.use("/api/reports", authMiddleware, reportRoutes);
+app.use("/api/expenditures", authMiddleware, expenditureRoutes);
 // Export for Vercel serverless functions
 export default app;
 

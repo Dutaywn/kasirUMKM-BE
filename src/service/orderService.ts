@@ -14,13 +14,13 @@ export const createOrder = async (data: CreateOrderDTO) => {
             }[] = [];
 
             for (const item of items) {
-                // 1. Fetch the product to get the current price and stock
-                const product = await tx.product.findUnique({
-                    where: { id: item.productId },
+                // 1. Fetch the product to get the current price and stock, AND verify it belongs to the buyer.
+                const product = await tx.product.findFirst({
+                    where: { id: item.productId, userId: userId },
                 });
 
                 if (!product) {
-                    throw new Error(`Product with id ${item.productId} not found`);
+                    throw new Error(`Product with id ${item.productId} not found or doesn't belong to you`);
                 }
 
                 // 2. Check sufficient stock
@@ -96,6 +96,7 @@ export const createOrder = async (data: CreateOrderDTO) => {
 };
 
 export const getAllOrders = async (
+    userId: number,
     page: number = 1,
     limit: number = 10,
     search?: string,
@@ -108,7 +109,7 @@ export const getAllOrders = async (
         const skip = (page - 1) * limit;
         const take = limit;
 
-        const where: any = {};
+        const where: any = { userId };
 
         // 🔹 FILTER (lebih presisi)
         if (paymentStatus) {
@@ -211,10 +212,10 @@ export const getAllOrders = async (
     }
 };
 
-export const getOrderById = async (id: number) => {
+export const getOrderById = async (id: number, userId: number) => {
     try {
-        return await prisma.order.findUnique({
-            where: { id },
+        return await prisma.order.findFirst({
+            where: { id, userId },
             include: {
                 items: {
                     include: {

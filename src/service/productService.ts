@@ -2,12 +2,12 @@ import { prisma } from "../../lib/prisma.js";
 import { CreateProductDTO, UpdateProductDTO } from "../types/product.dto.js";
 
 
-export const getAllProducts = async (page: number = 1, limit: number = 10, search?: string) => {
+export const getAllProducts = async (userId: number, page: number = 1, limit: number = 10, search?: string) => {
     try {
         const skip = (page - 1) * limit;
         const take = limit;
 
-        const where: any = {};
+        const where: any = { userId };
         if (search) {
             where.OR = [
                 { name: { contains: search, mode: 'insensitive' } },
@@ -46,11 +46,12 @@ export const getAllProducts = async (page: number = 1, limit: number = 10, searc
     }
 }
 
-export const getProductById = async (id: number) => {
+export const getProductById = async (id: number, userId: number) => {
     try {
-        const product = await prisma.product.findUnique({
+        const product = await prisma.product.findFirst({
             where: {
                 id,
+                userId,
             },
             include: {
                 category: true,
@@ -62,7 +63,7 @@ export const getProductById = async (id: number) => {
     }
 }
 
-export const createProduct = async (data: any) => {
+export const createProduct = async (data: any, userId: number) => {
     try {
         const { stocks, stockType, note, ...rest } = data;
         const initialStock = Number(stocks || 0);
@@ -70,6 +71,7 @@ export const createProduct = async (data: any) => {
         const product = await prisma.product.create({
             data: {
                 ...rest,
+                userId,
                 stocks: initialStock,
                 stockType: stockType,
                 stockId: {
@@ -91,7 +93,7 @@ export const createProduct = async (data: any) => {
     }
 }
 
-export const updateProduct = async (id: number, data: any) => {
+export const updateProduct = async (id: number, data: any, userId: number) => {
     try {
         const { stocks, stockType, note, ...rest } = data;
         
@@ -112,6 +114,14 @@ export const updateProduct = async (id: number, data: any) => {
             };
         }
 
+        // verify ownership
+        const existingProduct = await prisma.product.findFirst({
+            where: { id, userId }
+        });
+        if (!existingProduct) {
+            throw new Error("Product not found or you don't have permission to modify it");
+        }
+
         const product = await prisma.product.update({
             where: {
                 id,
@@ -128,8 +138,16 @@ export const updateProduct = async (id: number, data: any) => {
     }
 }
 
-export const deleteProduct = async (id: number) => {
+export const deleteProduct = async (id: number, userId: number) => {
     try {
+        // verify ownership
+        const existingProduct = await prisma.product.findFirst({
+            where: { id, userId }
+        });
+        if (!existingProduct) {
+            throw new Error("Product not found or you don't have permission to delete it");
+        }
+
         const product = await prisma.product.delete({
             where: {
                 id,

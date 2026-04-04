@@ -2,9 +2,14 @@ import { Request, Response } from "express";
 import * as orderService from "../service/orderService.js";
 import { CreateOrderDTO } from "../types/order.dto.js";
 
-export const createOrder = async (req: Request, res: Response) => {
+import { AuthenticatedRequest } from "../middleware/authMiddleware.js";
+
+export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const data: CreateOrderDTO = req.body;
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+        const data: CreateOrderDTO = { ...req.body, userId };
         const order = await orderService.createOrder(data);
         res.status(201).json({
             message: "Order created successfully",
@@ -17,7 +22,7 @@ export const createOrder = async (req: Request, res: Response) => {
     }
 };
 
-export const getAllOrders = async (req: Request, res: Response) => {
+export const getAllOrders = async (req: AuthenticatedRequest, res: Response) => {
     try {
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
@@ -27,7 +32,11 @@ export const getAllOrders = async (req: Request, res: Response) => {
         const startDate = req.query.startDate as string;
         const endDate = req.query.endDate as string;
 
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
         const { orders, total } = await orderService.getAllOrders(
+            userId,
             page, 
             limit, 
             search, 
@@ -57,10 +66,13 @@ export const getAllOrders = async (req: Request, res: Response) => {
     }
 };
 
-export const getOrderById = async (req: Request, res: Response) => {
+export const getOrderById = async (req: AuthenticatedRequest, res: Response) => {
     try {
         const id = Number(req.params.id);
-        const order = await orderService.getOrderById(id);
+        const userId = Number(req.user?.userId);
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+        const order = await orderService.getOrderById(id, userId);
         if (!order) {
             return res.status(404).json({
                 message: "Order not found"

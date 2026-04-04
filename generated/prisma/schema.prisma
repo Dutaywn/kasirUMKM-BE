@@ -31,18 +31,21 @@ enum StockType {
 }
 
 model user {
-  id           Int           @id @default(autoincrement())
-  userName     String?
-  email        String?       @unique
-  password     String? // password untuk credentials login
-  role         Role          @default(USER)
-  provider     String? // "google" | "credentials"
-  providerId   String? // id unik dari Google
-  image        String? // foto profile Google
-  orders       order[]
-  expenditures expenditure[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id              Int             @id @default(autoincrement())
+  userName        String?
+  email           String?         @unique
+  password        String? // password untuk credentials login
+  role            Role            @default(USER)
+  provider        String? // "google" | "credentials"
+  providerId      String? // id unik dari Google
+  image           String? // foto profile Google
+  orders          order[]
+  products        product[]
+  expenditures    expenditure[]
+  categories      category[]
+  reportSummaries reportSummary[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 }
 
 model product {
@@ -54,6 +57,8 @@ model product {
   category   category    @relation(fields: [categoryId], references: [id])
   stocks     Int
   stockType  String
+  userId     Int
+  user       user        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   stockId    stock[]
   orderItems orderItem[]
   createdAt  DateTime    @default(now())
@@ -69,10 +74,13 @@ model category {
   name        String?
   description String?
   products    product[]
+  userId      Int
+  user        user      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
   @@index([name])
+  @@index([userId])
 }
 
 model stock {
@@ -144,8 +152,10 @@ model reportSummary {
   netProfit       Int      @default(0)
   totalOrders     Int      @default(0)
   topProductsData Json?
+  userId          Int
+  user            user     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  @@unique([date, periodType])
+  @@unique([userId, date, periodType])
 }

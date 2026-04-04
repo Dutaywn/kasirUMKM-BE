@@ -13,7 +13,7 @@ router.post("/logout", authController.logout);
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 router.get(
   "/google/callback",
-  passport.authenticate("google", { session: false, failureRedirect: `${process.env.FRONTEND_URL}/login?error=auth_failed` }),
+  passport.authenticate("google", { session: false, failureRedirect: `${process.env.FRONTEND_URL}/page/login?error=auth_failed` }),
   authController.googleCallback
 );
 

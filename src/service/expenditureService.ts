@@ -1,12 +1,12 @@
 import { prisma } from "../../lib/prisma.js";
 import { CreateExpenditureDTO, UpdateExpenditureDTO } from "../types/expenditure.dto.js";
 
-export const getAllExpenditures = async (page: number = 1, limit: number = 10, search?: string) => {
+export const getAllExpenditures = async (userId: number, page: number = 1, limit: number = 10, search?: string) => {
     try {
         const skip = (page - 1) * limit;
         const take = limit;
 
-        const where: any = {};
+        const where: any = { userId };
         if (search) {
             where.OR = [
                 { name: { contains: search, mode: 'insensitive' } },
@@ -41,10 +41,10 @@ export const getAllExpenditures = async (page: number = 1, limit: number = 10, s
     }
 };
 
-export const getExpenditureById = async (id: number) => {
+export const getExpenditureById = async (id: number, userId: number) => {
     try {
-        const expenditure = await prisma.expenditure.findUnique({
-            where: { id },
+        const expenditure = await prisma.expenditure.findFirst({
+            where: { id, userId },
             include: {
                 user: {
                     select: {
@@ -61,10 +61,10 @@ export const getExpenditureById = async (id: number) => {
     }
 };
 
-export const createExpenditure = async (data: CreateExpenditureDTO) => {
+export const createExpenditure = async (data: CreateExpenditureDTO, userId: number) => {
     try {
         const expenditure = await prisma.expenditure.create({
-            data,
+            data: { ...data, userId },
         });
         return expenditure;
     } catch (error) {
@@ -72,8 +72,16 @@ export const createExpenditure = async (data: CreateExpenditureDTO) => {
     }
 };
 
-export const updateExpenditure = async (id: number, data: UpdateExpenditureDTO) => {
+export const updateExpenditure = async (id: number, data: UpdateExpenditureDTO, userId: number) => {
     try {
+        // Verify ownership
+        const existingExpenditure = await prisma.expenditure.findFirst({
+            where: { id, userId }
+        });
+        if (!existingExpenditure) {
+            throw new Error("Expenditure not found or you don't have permission to modify it");
+        }
+
         const expenditure = await prisma.expenditure.update({
             where: { id },
             data,
@@ -84,8 +92,16 @@ export const updateExpenditure = async (id: number, data: UpdateExpenditureDTO) 
     }
 };
 
-export const deleteExpenditure = async (id: number) => {
+export const deleteExpenditure = async (id: number, userId: number) => {
     try {
+        // Verify ownership
+        const existingExpenditure = await prisma.expenditure.findFirst({
+            where: { id, userId }
+        });
+        if (!existingExpenditure) {
+            throw new Error("Expenditure not found or you don't have permission to delete it");
+        }
+
         const expenditure = await prisma.expenditure.delete({
             where: { id },
         });

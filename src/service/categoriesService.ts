@@ -1,20 +1,23 @@
 import {prisma} from "../../lib/prisma.js";
 import { CreateCategoryDTO, UpdateCategoryDTO } from "../types/category.dto.js";
 
-export const getAllCategories = async () => {
+export const getAllCategories = async (userId: number) => {
     try {
-        const categories = await prisma.category.findMany();
+        const categories = await prisma.category.findMany({
+            where: { userId }
+        });
         return categories;
     } catch (error) {
         throw error;
     }
 }
 
-export const getCategoryById = async (id: number) => {
+export const getCategoryById = async (id: number, userId: number) => {
     try {
-        const category = await prisma.category.findUnique({
+        const category = await prisma.category.findFirst({
             where: {
                 id,
+                userId,
             },
         });
         return category;
@@ -23,10 +26,13 @@ export const getCategoryById = async (id: number) => {
     }
 }
 
-export const createCategory = async (data: CreateCategoryDTO) => {
+export const createCategory = async (data: CreateCategoryDTO, userId: number) => {
     try {
         const category = await prisma.category.create({
-            data,
+            data: {
+                ...data,
+                userId
+            },
         });
         return category;
     } catch (error) {
@@ -34,8 +40,16 @@ export const createCategory = async (data: CreateCategoryDTO) => {
     }
 }
 
-export const updateCategory = async (id: number, data: UpdateCategoryDTO) => {
+export const updateCategory = async (id: number, data: UpdateCategoryDTO, userId: number) => {
     try {
+        // First verify the category belongs to the user
+        const existingCategory = await prisma.category.findFirst({
+            where: { id, userId }
+        });
+        if (!existingCategory) {
+            throw new Error("Category not found or you don't have permission to modify it");
+        }
+
         const category = await prisma.category.update({
             where: {
                 id,
@@ -48,8 +62,16 @@ export const updateCategory = async (id: number, data: UpdateCategoryDTO) => {
     }
 }
 
-export const deleteCategory = async (id: number) => {
+export const deleteCategory = async (id: number, userId: number) => {
     try {
+        // First verify the category belongs to the user
+        const existingCategory = await prisma.category.findFirst({
+            where: { id, userId }
+        });
+        if (!existingCategory) {
+            throw new Error("Category not found or you don't have permission to delete it");
+        }
+
         const category = await prisma.category.delete({
             where: {
                 id,

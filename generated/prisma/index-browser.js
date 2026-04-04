@@ -141,6 +141,7 @@ exports.Prisma.ProductScalarFieldEnum = {
   categoryId: 'categoryId',
   stocks: 'stocks',
   stockType: 'stockType',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -149,6 +150,7 @@ exports.Prisma.CategoryScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -201,6 +203,7 @@ exports.Prisma.ReportSummaryScalarFieldEnum = {
   netProfit: 'netProfit',
   totalOrders: 'totalOrders',
   topProductsData: 'topProductsData',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
